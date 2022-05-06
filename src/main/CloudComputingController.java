@@ -2,6 +2,7 @@ package main;
 
 public class CloudComputingController {
     AI ai = new AI();
+    //123
     DataProcessing dataProcessing = new DataProcessing();
     DatabaseManager databaseManager = new DatabaseManager();
     public void dataProcessing(byte[] Rawdata){
