@@ -1,9 +1,11 @@
 package main;
 
 public class DataProcessing {
-    public String processdata(String RawData){
+    public void ReceiveRawData(byte[] RawData){
 
-        String processedData = "{234,35,434,54}"; //String processedData = cloud.processData(RawData)
-        return processedData;
+    }
+    public  byte[] ReturnProcessedData(){
+        byte[] byteArray = new byte[] {87, 79, 87, 46, 46, 46};
+        return byteArray;
     }
 }

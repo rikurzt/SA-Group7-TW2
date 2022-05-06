@@ -1,7 +1,7 @@
 package main;
 
 public class AI {
-    public void Analyzing(String processedData){
+    public void Analyzing(byte[] processedData){
         //pushToCloudToDoCloudComputing(processedData);
     }
 
