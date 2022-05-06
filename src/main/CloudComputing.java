@@ -12,7 +12,11 @@ public class CloudComputing {
 
 
 }
+<<<<<<< HEAD
 class DataBaseMananger{
+=======
+ class DataBaseMananger{
+>>>>>>> main
     public List FakeDataBase = new ArrayList<>();
     public void savetodatabase(){
 

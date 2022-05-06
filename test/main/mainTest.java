@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 class mainTest {
     public Wristband wristband = new Wristband();
+    public CloudComputing cloudComputing = new CloudComputing();
 
     @Test
     public void TestWristband(){
@@ -20,5 +21,12 @@ class mainTest {
         wristband.FakeSDCard.pop();
         wristband.FakeSDCard.pop();
         Assertions.assertEquals(wristband.FakeSDCard.empty(),true);
+    }
+    @Test
+    public void TestUploadFile(){
+        wristband.mic.RecordVoice(wristband.mic.DetectVoice());
+        wristband.SaveVoiceToSDCArd();
+        wristband.UploadData();
+        Assertions.assertEquals(CloudComputing.DataBuffer.isEmpty(),false);
     }
 }
