@@ -5,12 +5,13 @@ public class Wristband {
 
     MincroPhone mic = new MincroPhone();
     Battery battery = new Battery();
-    public Stack<int[]> FakeSDCard = new Stack<int[]>();
+    public Stack<UploadFile> FakeSDCard = new Stack<UploadFile>();
     public String gettime(){
         return "2022/5/5";
     }
     public void SaveVoiceToSDCArd(){
-        FakeSDCard.push(mic.GetRawData());
+        FakeSDCard.push(new UploadFile(gettime(),mic
+                .GetRawData()));
     }
     public void UploadData(){
         CloudComputing.DataBuffer.add(FakeSDCard.pop());
@@ -38,5 +39,13 @@ class Battery{
     private int Volune=100;
     public int getVolune(){
         return Volune;
+    }
+}
+class UploadFile{
+    private String uploadDate;
+    private int[] RawMP3;
+    public UploadFile(String date,int[] file){
+        uploadDate=date;
+        RawMP3=file;
     }
 }
