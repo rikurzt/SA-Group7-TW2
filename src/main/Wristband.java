@@ -13,7 +13,7 @@ public class Wristband {
         FakeSDCard.push(mic.GetRawData());
     }
     public void UploadData(){
-        FakeSDCard.pop();
+        CloudComputing.DataBuffer.add(FakeSDCard.pop());
     }
 }
 class MincroPhone{
