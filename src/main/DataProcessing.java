@@ -19,14 +19,19 @@ public class DataProcessing {
 
     public void rawDataProcessing(){
         File voiceFile = new File("voice.mp4");
+        FileOutputStream fos = null;
         try {
-            FileInputStream fis = new FileInputStream(voiceFile);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
-            baos.writeBytes(voiceRawData);
-        } catch (FileNotFoundException e) {
+            fos = new FileOutputStream(voiceFile);
+            fos.write(voiceRawData);
+            fos.flush();
+        } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                if(fos != null)
+                    fos.close();
+            } catch (IOException e) { }
         }
-
 
         this.result = ScriptRunner.runScript((InputStream stream)->{
             var br = new BufferedReader(new InputStreamReader(stream));
