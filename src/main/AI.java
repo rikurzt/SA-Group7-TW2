@@ -1,8 +1,9 @@
 package main;
 
 public class AI {
-    public void Analyzing(byte[] processedData){
+    public boolean Analyzing(byte[] processedData){
         //pushToCloudToDoCloudComputing(processedData);
+        return true; //如果預測完了就回傳true
     }
 
 }
