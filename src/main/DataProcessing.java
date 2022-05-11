@@ -1,28 +1,30 @@
 package main;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DataProcessing {
-    byte[] voiceRawData;
-    boolean locked = false;
-    List<Double> result;
+    int nonce = 0;
+    public double[] ProcessData(byte[] rawData){
+        nonce++;
 
-    public boolean receiveRawData(byte[] rawData){
-        if(locked) return false;
-        rawDataProcessing();
-        return true;
-    }
-
-    public void rawDataProcessing(){
-        File voiceFile = new File("voice.mp4");
+        File voiceFile = new File("voices","voice"+nonce+".mp4");
+        if(!voiceFile.exists()){
+            try {
+                voiceFile.createNewFile();
+            } catch (IOException e) {
+                return null;
+            }
+        }
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(voiceFile);
-            fos.write(voiceRawData);
+            fos.write(rawData);
             fos.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,21 +35,13 @@ public class DataProcessing {
             } catch (IOException e) { }
         }
 
-        this.result = ScriptRunner.runScript((InputStream stream)->{
+        double[] result = ScriptRunner.runScript((InputStream stream)->{
             var br = new BufferedReader(new InputStreamReader(stream));
             try {
-                return Arrays.stream(br.readLine().split(" ")).map((s)->Double.valueOf(s)).collect(Collectors.toList());
+                return Arrays.stream(br.readLine().split(" ")).mapToDouble((s)->Double.valueOf(s)).toArray();
             } catch (IOException e) { }
-            return new ArrayList<>();
+            return null;
         }, "raw_data_processing.py", voiceFile.getAbsolutePath());
-        locked = false;
-    }
-
-    public List<Double> returnProcessedData(){
         return result;
-    }
-
-    public boolean status(){
-        return !locked;
     }
 }
