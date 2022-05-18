@@ -1,7 +1,12 @@
 package main;
 
 import java.io.*;
+<<<<<<< Updated upstream
 import java.time.LocalDateTime;
+=======
+import java.nio.ByteBuffer;
+import java.nio.file.Files;
+>>>>>>> Stashed changes
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DataProcessing {
+<<<<<<< Updated upstream
     int nonce = 0;
     public double[] ProcessData(byte[] rawData){
         nonce++;
@@ -22,6 +28,28 @@ public class DataProcessing {
             }
         }
         FileOutputStream fos = null;
+=======
+    UploadFile uploadFile;
+    byte[] voiceRawData ;
+    boolean locked = false;
+    List<Double> result;
+
+    public boolean receiveRawData(byte[] rawData){
+
+        try {
+            voiceRawData = Files.readAllBytes(uploadFile.getFileRaw().toPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if(locked) return false;
+        rawDataProcessing();
+        return true;
+    }
+
+    public void rawDataProcessing(){
+        File voiceFile = new File("voice.mp4");
+>>>>>>> Stashed changes
         try {
             fos = new FileOutputStream(voiceFile);
             fos.write(rawData);
