@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Stack;
 
 public class CloudComputing {
-    private ai  aicom= new ai();
+    private AI aicom= new AI();
     private DataBaseMananger db = new DataBaseMananger();
     private DataProcessing dataprocessing = new DataProcessing();
     public static Stack<UploadFile> DataBuffer = new Stack<UploadFile>();
