@@ -36,7 +36,7 @@ def measurePitch(voiceID, f0min, f0max, unit):
     for p in pitch_values:
         if p != np.nan:
             Fhi = max(Fhi, p)
-            Flo = max(Flo, p)
+            Flo = min(Flo, p)
 
     meanF0 = call(pitch, "Get mean", 0, 0, unit) # get mean pitch
     stdevF0 = call(pitch, "Get standard deviation", 0 ,0, unit) # get standard deviation
@@ -48,12 +48,12 @@ def measurePitch(voiceID, f0min, f0max, unit):
     rapJitter = call(pointProcess, "Get jitter (rap)", 0, 0, 0.0001, 0.02, 1.3)
     ppq5Jitter = call(pointProcess, "Get jitter (ppq5)", 0, 0, 0.0001, 0.02, 1.3)
     ddpJitter = call(pointProcess, "Get jitter (ddp)", 0, 0, 0.0001, 0.02, 1.3)
-    localShimmer =  call([sound, pointProcess], "Get shimmer (local)", 0, 0, 0.0001, 0.02, 1.3, 1.6)
-    localdbShimmer = call([sound, pointProcess], "Get shimmer (local_dB)", 0, 0, 0.0001, 0.02, 1.3, 1.6)
-    apq3Shimmer = call([sound, pointProcess], "Get shimmer (apq3)", 0, 0, 0.0001, 0.02, 1.3, 1.6)
-    apq5Shimmer = call([sound, pointProcess], "Get shimmer (apq5)", 0, 0, 0.0001, 0.02, 1.3, 1.6)
-    apq11Shimmer =  call([sound, pointProcess], "Get shimmer (apq11)", 0, 0, 0.0001, 0.02, 1.3, 1.6)
-    ddaShimmer = call([sound, pointProcess], "Get shimmer (dda)", 0, 0, 0.0001, 0.02, 1.3, 1.6)
+    localShimmer =  call([sound, pointProcess], "Get shimmer (local)", 0, 0, 0.0001, 0.02, 1.3, 1.6) / 10
+    localdbShimmer = call([sound, pointProcess], "Get shimmer (local_dB)", 0, 0, 0.0001, 0.02, 1.3, 1.6) / 10
+    apq3Shimmer = call([sound, pointProcess], "Get shimmer (apq3)", 0, 0, 0.0001, 0.02, 1.3, 1.6) / 10
+    apq5Shimmer = call([sound, pointProcess], "Get shimmer (apq5)", 0, 0, 0.0001, 0.02, 1.3, 1.6) / 10
+    apq11Shimmer =  call([sound, pointProcess], "Get shimmer (apq11)", 0, 0, 0.0001, 0.02, 1.3, 1.6) / 10
+    ddaShimmer = call([sound, pointProcess], "Get shimmer (dda)", 0, 0, 0.0001, 0.02, 1.3, 1.6) / 10
     
     """
     return (duration, meanF0, stdevF0, hnr, localJitter, localabsoluteJitter, rapJitter, ppq5Jitter, ddpJitter, 
@@ -66,8 +66,7 @@ def measurePitch(voiceID, f0min, f0max, unit):
     nhr, status, RPDE, DFA, spread1, spread2, D2, PPE = (-1,) * 8
     
     return (meanF0, Fhi, Flo, localJitter, localabsoluteJitter, rapJitter, ppq5Jitter, ddpJitter, 
-            localShimmer, localdbShimmer, apq3Shimmer, apq5Shimmer, apq11Shimmer, ddaShimmer,
-            nhr, hnr, status, RPDE, DFA, spread1, spread2, D2, PPE)
+            localShimmer, localdbShimmer, apq3Shimmer, apq5Shimmer, apq11Shimmer, ddaShimmer, hnr)
 
 model = separator.from_hparams(source="speechbrain/sepformer-wsj02mix", savedir='pretrained_models/sepformer-wsj02mix')
 verification = SpeakerRecognition.from_hparams(source="speechbrain/spkrec-ecapa-voxceleb", savedir="pretrained_models/spkrec-ecapa-voxceleb")
@@ -90,11 +89,17 @@ for i in range(2):
     score, prediction = verification.verify_files(file_name+f'-{i}.wav', f'test.wav')
     scores[i] = score
 
-if max(scores) < 0.7:
-    exit(2)
+#if max(scores) < 0.7:
+#    exit(2)
 
 i = scores.index(max(scores))
 
 result = measurePitch(parselmouth.Sound(file_name+f'-{i}.wav'), 75, 300, "Hertz")
-
 print(*result)
+
+result = measurePitch(parselmouth.Sound(file_name+f'-{1-i}.wav'), 75, 300, "Hertz")
+print(*result)
+
+for i in range(2):
+    os.remove(file_name+f'-{1-i}.wav')
+os.remove(file_name+'.wav')

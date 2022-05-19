@@ -9,4 +9,12 @@ public class Result {
         this.time = time;
         this.result = result;
     }
+
+    public boolean getResult() {
+        return result;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
 }
