@@ -37,10 +37,8 @@ public class DataProcessing {
 
         double[] result = ScriptRunner.runScript((InputStream stream)->{
             var br = new BufferedReader(new InputStreamReader(stream));
-            try {
-                return Arrays.stream(br.readLine().split(" ")).mapToDouble((s)->Double.valueOf(s)).toArray();
-            } catch (IOException e) { }
-            return null;
+            List<String> lines = br.lines().collect(Collectors.toList());
+            return Arrays.stream(lines.get(lines.size()-1).split(" ")).mapToDouble((s)->Double.valueOf(s)).toArray();
         }, "raw_data_processing.py", voiceFile.getAbsolutePath());
         return result;
     }
