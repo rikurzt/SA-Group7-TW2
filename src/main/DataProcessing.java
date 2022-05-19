@@ -39,7 +39,7 @@ public class DataProcessing {
             var br = new BufferedReader(new InputStreamReader(stream));
             List<String> lines = br.lines().collect(Collectors.toList());
             return Arrays.stream(lines.get(lines.size()-1).split(" ")).mapToDouble((s)->Double.valueOf(s)).toArray();
-        }, "raw_data_processing.py", voiceFile.getAbsolutePath());
+        }, "data_processing.py", voiceFile.getAbsolutePath());
         return result;
     }
 }
