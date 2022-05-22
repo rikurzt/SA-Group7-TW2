@@ -8,8 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Repository
@@ -17,8 +15,6 @@ public class DBConnector implements IRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    private static DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private Collection<Result> resultList(String sql){
         return jdbcTemplate.queryForList(sql).stream().map(map->{

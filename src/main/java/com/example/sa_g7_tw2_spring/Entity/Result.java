@@ -11,4 +11,14 @@ public class Result {
     LocalDateTime time;
     boolean result;
     double length;
+    public boolean getResult() {
+        return result;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+    public double getLength() {
+        return length;
+    }
 }
