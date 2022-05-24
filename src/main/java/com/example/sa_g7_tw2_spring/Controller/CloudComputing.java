@@ -5,6 +5,7 @@ import com.example.sa_g7_tw2_spring.DataProcessing.DataProcessing;
 import com.example.sa_g7_tw2_spring.Entity.Result;
 import com.example.sa_g7_tw2_spring.Wristband.*;
 import com.example.sa_g7_tw2_spring.repository.DBConnector;
+import com.example.sa_g7_tw2_spring.utils.Reflect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +50,8 @@ public class CloudComputing {
 
     //public static Stack<UploadFile> DataBuffer = new Stack<UploadFile>();
 
-
+    public int getNonce(DataProcessing dataProcessing){
+        return Reflect.get(dataProcessing, "nonce");
+    }
 }
 
