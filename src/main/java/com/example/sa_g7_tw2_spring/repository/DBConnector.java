@@ -4,10 +4,15 @@ import com.example.sa_g7_tw2_spring.Entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Repository
@@ -16,6 +21,7 @@ public class DBConnector implements IRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    /*要添加例外處理*/
     private Collection<Result> resultList(String sql){
         return jdbcTemplate.queryForList(sql).stream().map(map->{
             return new Result((LocalDateTime) map.get("up_date"),(Boolean)map.get("result"),(Double)map.get("record_len"));
@@ -59,6 +65,23 @@ public class DBConnector implements IRepository {
     public void saveResult(Result result) {
         jdbcTemplate.update("INSERT INTO analysisresult.analysis(up_date, result, record_len) " +
                 "VALUES (?,?,?)",result.getTime(),result.getResult(),result.getLength());
+<<<<<<< Updated upstream
+=======
+    }
+
+    @Override
+    public void CatchSoundFile(MultipartFile file) throws IOException {
+        File convertFile = new File("/file"+file.getOriginalFilename());
+
+        convertFile.createNewFile();
+        FileOutputStream fout = new FileOutputStream(convertFile);
+        fout.write(file.getBytes());
+        for(byte b : file.getBytes()){
+            //System.out.print(Integer.toHexString(b));
+        }
+        System.out.println(convertFile.getAbsolutePath());
+        fout.close();
+>>>>>>> Stashed changes
     }
 
 
