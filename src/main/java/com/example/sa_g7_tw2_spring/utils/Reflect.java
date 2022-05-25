@@ -59,25 +59,27 @@ public class Reflect {
     public static <T> T  invoke(Class clazz, Object o, String name, Object... args){
         var len = args.length;
         if(len%2 == 1) return (T) new Exception("arguments length error");
-        Class[] classes = new Class[len/2];
-        Object[] objects = new Object[len/2];
-        for (int i = 0; i < len; i+=2) {
-            classes[i/2] = (Class) args[i];
-            objects[i/2] = args[i+1];
-        }
-        boolean accessible = true;
-        Method method = null;
-        try {
-            method = clazz.getDeclaredMethod(name, classes);
-            accessible = method.canAccess(o);
-            method.setAccessible(true);
-            return (T) method.invoke(o,objects);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-            return (T) e;
-        }finally {
-            if(!accessible){
-                method.setAccessible(false);
+        else{
+            Class[] classes = new Class[len/2];
+            Object[] objects = new Object[len/2];
+            for (int i = 0; i < len; i+=2) {
+                classes[i/2] = (Class) args[i];
+                objects[i/2] = args[i+1];
+            }
+            boolean accessible = true;
+            Method method = null;
+            try {
+                method = clazz.getDeclaredMethod(name, classes);
+                accessible = method.canAccess(o);
+                method.setAccessible(true);
+                return (T) method.invoke(o,objects);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+                return (T) e;
+            }finally {
+                if(!accessible){
+                    method.setAccessible(false);
+                }
             }
         }
     }
