@@ -50,7 +50,7 @@ public class CloudComputing {
 
     //public static Stack<UploadFile> DataBuffer = new Stack<UploadFile>();
 
-    public int getNonce(DataProcessing dataProcessing){
+    public int getNonce(Class<?> clazz, DataProcessing dataProcessing){
         return Reflect.get(dataProcessing, "nonce");
     }
 }
