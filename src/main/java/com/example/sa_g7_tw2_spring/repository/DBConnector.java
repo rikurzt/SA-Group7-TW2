@@ -58,7 +58,7 @@ public class DBConnector implements IRepository {
     @Override
     public void saveResult(Result result) {
         jdbcTemplate.update("INSERT INTO analysisresult.analysis(up_date, result, record_len) " +
-                "VALUES (?,?,?)",result.getTime(),result.isResult(),result.getLength());
+                "VALUES (?,?,?)",result.getTime(),result.getResult(),result.getLength());
     }
 
 
