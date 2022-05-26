@@ -1,9 +1,6 @@
 package com.example.sa_g7_tw2_spring.DataProcessing;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 public class ScriptRunner {
     public static <T> T runScript(Caster<T> caster, String cmd, String... args){
@@ -18,13 +15,13 @@ public class ScriptRunner {
     public static <T> T runScript(Caster<T> caster, String cmd, File dir, String... args)  {
         try{
             Process p = Runtime.getRuntime().exec(cmd, args, dir);
-            return caster.cast(p.getInputStream());
+            return caster.cast(new BufferedReader(new InputStreamReader(p.getInputStream())));
         }catch (IOException e){
             return null;
         }
     }
 
     public interface Caster<T>{
-        T cast(InputStream stream);
+        T cast(BufferedReader stream);
     }
 }

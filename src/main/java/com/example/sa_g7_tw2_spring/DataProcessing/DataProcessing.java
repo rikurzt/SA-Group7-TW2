@@ -45,12 +45,13 @@ public class DataProcessing {
             } catch (IOException e) { }
         }
 
-        double[] result = ScriptRunner.runScript((InputStream stream)->{
-            var br = new BufferedReader(new InputStreamReader(stream));
-            try {
-                return Arrays.stream(br.readLine().split(" ")).mapToDouble((s)->Double.valueOf(s)).toArray();
-            } catch (IOException e) { }
-            return null;
+        double[] result = ScriptRunner.runScript((BufferedReader br)->{
+            List<String> lines = br.lines().toList();
+            try{
+                return Arrays.stream(lines.get(lines.size() - 1).split(" ")).mapToDouble((s)->Double.valueOf(s)).toArray();
+            }catch (Exception e){
+                return null;
+            }
         }, "py","raw_data_processing.py", voiceFile.getAbsolutePath());
 
         return result;
