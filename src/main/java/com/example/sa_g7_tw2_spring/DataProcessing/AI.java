@@ -18,7 +18,7 @@ public class AI {
                 return Boolean.valueOf(br.readLine());
             } catch (IOException e) { }
             return true;
-        },"ai.py", String.join(" ", Arrays.stream(data).mapToObj(d->String.valueOf(d)).collect(Collectors.toList())));
+        },"py","ai.py", String.join(" ", Arrays.stream(data).mapToObj(d->String.valueOf(d)).collect(Collectors.toList())));
         return result;
     }
 }

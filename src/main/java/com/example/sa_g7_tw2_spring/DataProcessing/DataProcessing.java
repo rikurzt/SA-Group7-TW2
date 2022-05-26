@@ -13,7 +13,7 @@ public class DataProcessing {
     public double[] ProcessData(byte[] rawData){
         nonce++;
 
-        File voiceFile = new File("voices","voice"+nonce+".mp4");
+        File voiceFile = new File("voices","/voice"+nonce+".wav");
         if(!voiceFile.exists()){
             try {
                 voiceFile.createNewFile();
@@ -41,7 +41,7 @@ public class DataProcessing {
                 return Arrays.stream(br.readLine().split(" ")).mapToDouble((s)->Double.valueOf(s)).toArray();
             } catch (IOException e) { }
             return null;
-        }, "raw_data_processing.py", voiceFile.getAbsolutePath());
+        }, "py","raw_data_processing.py", voiceFile.getAbsolutePath());
         return result;
     }
 }
