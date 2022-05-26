@@ -65,8 +65,6 @@ public class DBConnector implements IRepository {
     public void saveResult(Result result) {
         jdbcTemplate.update("INSERT INTO analysisresult.analysis(up_date, result, record_len) " +
                 "VALUES (?,?,?)",result.getTime(),result.getResult(),result.getLength());
-<<<<<<< Updated upstream
-=======
     }
 
     @Override
@@ -81,7 +79,6 @@ public class DBConnector implements IRepository {
         }
         System.out.println(convertFile.getAbsolutePath());
         fout.close();
->>>>>>> Stashed changes
     }
 
 
