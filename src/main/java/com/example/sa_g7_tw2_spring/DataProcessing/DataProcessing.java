@@ -46,13 +46,38 @@ public class DataProcessing {
         }
 
         double[] result = ScriptRunner.runScript((BufferedReader br)->{
-            List<String> lines = br.lines().toList();
             try{
-                return Arrays.stream(lines.get(lines.size() - 1).split(" ")).mapToDouble((s)->Double.valueOf(s)).toArray();
+                String line, last = null;
+                while((line = br.readLine()) != null){
+                    last = line;
+                    System.out.println(line);
+                }
+                return Arrays.stream(last.split(" ")).mapToDouble((s)->Double.valueOf(s)).toArray();
             }catch (Exception e){
                 return null;
             }
-        }, "py","raw_data_processing.py", voiceFile.getAbsolutePath());
+        }, "py","test/data_processing.py", voiceFile.getAbsolutePath());
+
+        return result;
+    }
+
+    public double[] test(File voiceFile){
+
+
+        double[] result = ScriptRunner.runScript((BufferedReader br)->{
+            try{
+                String line, last = null;
+
+
+                while ((line = br.readLine()) != null){
+                    last = line;
+                    System.out.println(line);
+                }
+                return Arrays.stream(last.split(" ")).mapToDouble((s)->Double.valueOf(s)).toArray();
+            }catch (Exception e){
+                return null;
+            }
+        }, "py","test/data_processing.py", voiceFile.getAbsolutePath());
 
         return result;
     }
