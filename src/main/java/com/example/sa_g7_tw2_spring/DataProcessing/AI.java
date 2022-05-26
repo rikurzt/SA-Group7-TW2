@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class AI {
 
-    boolean Analyze(double[] data){
+    public boolean Analyze(double[] data){
         boolean result = ScriptRunner.runScript((InputStream stream) -> {
             var br = new BufferedReader(new InputStreamReader(stream));
             try {
