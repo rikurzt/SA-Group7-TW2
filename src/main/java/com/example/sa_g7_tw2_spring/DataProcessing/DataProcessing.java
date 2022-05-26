@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 public class DataProcessing {
     int nonce = 0;
     public double[] ProcessData(MultipartFile file){
-        byte rawData[] = new byte[0];
+        byte rawData[];
         try {
             rawData = file.getBytes();
         } catch (IOException e) {
@@ -23,7 +23,7 @@ public class DataProcessing {
         }
         nonce++;
 
-        File voiceFile = new File("voices","voice"+nonce+".mp4");
+        File voiceFile = new File("voices","voice"+nonce+".wav");
         if(!voiceFile.exists()){
             try {
                 voiceFile.createNewFile();
@@ -51,7 +51,7 @@ public class DataProcessing {
                 return Arrays.stream(br.readLine().split(" ")).mapToDouble((s)->Double.valueOf(s)).toArray();
             } catch (IOException e) { }
             return null;
-        }, "raw_data_processing.py", voiceFile.getAbsolutePath());
+        }, "py","raw_data_processing.py", voiceFile.getAbsolutePath());
 
         return result;
     }
