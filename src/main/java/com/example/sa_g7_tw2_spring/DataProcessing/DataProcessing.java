@@ -1,5 +1,8 @@
 package com.example.sa_g7_tw2_spring.DataProcessing;
 
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -8,12 +11,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Service
 public class DataProcessing {
     int nonce = 0;
-    public double[] ProcessData(byte[] rawData){
+    public double[] ProcessData(MultipartFile file){
+        byte rawData[] = new byte[0];
+        try {
+            rawData = file.getBytes();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         nonce++;
 
-        File voiceFile = new File("voices","/voice"+nonce+".wav");
+        File voiceFile = new File("voices","voice"+nonce+".mp4");
         if(!voiceFile.exists()){
             try {
                 voiceFile.createNewFile();
@@ -41,7 +51,8 @@ public class DataProcessing {
                 return Arrays.stream(br.readLine().split(" ")).mapToDouble((s)->Double.valueOf(s)).toArray();
             } catch (IOException e) { }
             return null;
-        }, "py","raw_data_processing.py", voiceFile.getAbsolutePath());
+        }, "raw_data_processing.py", voiceFile.getAbsolutePath());
+
         return result;
     }
 }
