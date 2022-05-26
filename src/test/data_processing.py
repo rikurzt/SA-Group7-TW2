@@ -74,6 +74,7 @@ verification = SpeakerRecognition.from_hparams(source="speechbrain/spkrec-ecapa-
 #input
 path = sys.argv[-1].replace("\\","/")
 if not os.path.exists(path):
+    print("file not exists", file=sys.stderr)
     exit(1)
 #path = os.getcwd()+"/test_data_raw/test_set_subject_26.wma"
 
@@ -86,8 +87,8 @@ for i in range(2):
     spearated_np =  np.array(spearated[:,:,i].detach().cpu().squeeze())
     write(file_name+f'-{i}.wav', 8000, np.int16(spearated_np/np.max(np.abs(spearated_np)) * 32767))
 
-    score, prediction = verification.verify_files(file_name+f'-{i}.wav', f'test.wav')
-    scores[i] = score
+#    score, prediction = verification.verify_files(file_name+f'-{i}.wav', f'test.wav')
+#    scores[i] = score
 
 #if max(scores) < 0.7:
 #    exit(2)
@@ -102,4 +103,4 @@ print(*result)
 
 for i in range(2):
     os.remove(file_name+f'-{1-i}.wav')
-os.remove(file_name+'.wav')
+#os.remove(file_name+'.wav')
