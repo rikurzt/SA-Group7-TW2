@@ -28,9 +28,9 @@ def predict(input_data):
     """
     print(str(prediction[0] != 0).lower())
 
-with open("model.data","rb") as file:
+with open("src/py/model.data","rb") as file:
     model : svm.SVC = pickle.load(file)
-with open("scaler.data","rb") as file:
+with open("src/py/scaler.data","rb") as file:
     scaler : StandardScaler = pickle.load(file)
 
 predict(inp)

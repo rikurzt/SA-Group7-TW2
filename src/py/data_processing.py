@@ -1,6 +1,6 @@
 import speechbrain as sb
 from speechbrain.dataio.dataio import read_audio
-from IPython.display import Audio
+#from IPython.display import Audio
 import os
 from scipy.io.wavfile import write
 import numpy as np
@@ -74,7 +74,6 @@ verification = SpeakerRecognition.from_hparams(source="speechbrain/spkrec-ecapa-
 #input
 path = sys.argv[-1].replace("\\","/")
 if not os.path.exists(path):
-    print("file not exists", file=sys.stderr)
     exit(1)
 #path = os.getcwd()+"/test_data_raw/test_set_subject_26.wma"
 
@@ -103,4 +102,4 @@ print(*result)
 
 for i in range(2):
     os.remove(file_name+f'-{1-i}.wav')
-#os.remove(file_name+'.wav')
+os.remove(file_name+'.wav')

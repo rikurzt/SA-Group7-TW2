@@ -78,6 +78,8 @@ public class DBConnector implements IRepository {
             //System.out.print(Integer.toHexString(b));
         }
         System.out.println(convertFile.getAbsolutePath());
+        jdbcTemplate.update("INSERT INTO analysisresult.voicefile(content) " +
+                "VALUES (?)",file.getBytes());
         fout.close();
     }
 

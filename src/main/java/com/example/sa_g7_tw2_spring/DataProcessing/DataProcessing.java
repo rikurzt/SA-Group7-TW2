@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Service
+
 public class DataProcessing {
     int nonce = 0;
     public double[] ProcessData(MultipartFile file){
@@ -23,7 +23,7 @@ public class DataProcessing {
         }
         nonce++;
 
-        File voiceFile = new File("voices","voice"+nonce+".wav");
+        File voiceFile = new File("src/voice"+nonce+".wav");
         if(!voiceFile.exists()){
             try {
                 voiceFile.createNewFile();
@@ -44,9 +44,12 @@ public class DataProcessing {
                     fos.close();
             } catch (IOException e) { }
         }
+        File processPythonFile = new File("src/py/data_processing.py");
+
 
         double[] result = ScriptRunner.runScript((BufferedReader br)->{
             try{
+
                 String line, last = null;
                 while((line = br.readLine()) != null){
                     last = line;
@@ -54,15 +57,15 @@ public class DataProcessing {
                 }
                 return Arrays.stream(last.split(" ")).mapToDouble((s)->Double.valueOf(s)).toArray();
             }catch (Exception e){
-                return null;
+                throw new RuntimeException(e);
             }
-        }, "py","test/data_processing.py", voiceFile.getAbsolutePath());
+        }, "py",processPythonFile.getAbsolutePath(), voiceFile.getAbsolutePath());
 
         return result;
     }
 
     public double[] test(File voiceFile){
-
+        File processPythonFile = new File("src/py/data_processing.py");
 
         double[] result = ScriptRunner.runScript((BufferedReader br)->{
             try{
@@ -77,7 +80,7 @@ public class DataProcessing {
             }catch (Exception e){
                 return null;
             }
-        }, "py","test/data_processing.py", voiceFile.getAbsolutePath());
+        }, "py",processPythonFile.getAbsolutePath(), voiceFile.getAbsolutePath());
 
         return result;
     }

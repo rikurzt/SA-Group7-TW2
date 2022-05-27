@@ -39,17 +39,17 @@ public class ScriptRunner {
 
     public static <T> T runScript(Caster<T> caster, String cmd, String... args){
         File dir = new File(args[0]);
-        args[0] = dir.getName();
-        if(!dir.isDirectory()){
-            dir = new File(dir.getParent());
-        }
+
         //File dir = new File(pathToScript.substring(pathToScript.replaceAll("\\\\","/").lastIndexOf("/")));
         return runScript(caster, cmd, dir, args);
     }
 
     public static <T> T runScript(Caster<T> caster, String cmd, File dir, String... args)  {
         try{
-            Process p = Runtime.getRuntime().exec("cmd.exe /c " + cmd + " " + String.join(" ", args),null, dir);
+            //Process p = Runtime.getRuntime().exec("cmd.exe /c " + cmd + " " + String.join(" ", args),null, dir);
+            String command = cmd+" "+args[0]+" "+args[1];
+            System.out.println(command);
+            Process p = Runtime.getRuntime().exec(command);
 
             StreamConsumer err = new StreamConsumer(p.getErrorStream(), printCaster);
             StreamConsumer<T> output = new StreamConsumer(p.getInputStream(), caster);
@@ -63,7 +63,7 @@ public class ScriptRunner {
             //return caster.cast(new BufferedReader(new InputStreamReader(p.getInputStream())));
         }catch (IOException | InterruptedException e){
             e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

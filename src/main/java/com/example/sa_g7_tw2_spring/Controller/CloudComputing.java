@@ -2,6 +2,7 @@ package com.example.sa_g7_tw2_spring.Controller;
 
 import com.example.sa_g7_tw2_spring.DataProcessing.AI;
 import com.example.sa_g7_tw2_spring.DataProcessing.DataProcessing;
+import com.example.sa_g7_tw2_spring.DataProcessing.MultiTheardHandler;
 import com.example.sa_g7_tw2_spring.Entity.Result;
 import com.example.sa_g7_tw2_spring.Wristband.*;
 import com.example.sa_g7_tw2_spring.repository.DBConnector;
@@ -24,12 +25,10 @@ import java.util.stream.Stream;
 @RequestMapping("/db")
 public class CloudComputing {
 
-    private AI aicom = new AI();
+    private MultiTheardHandler multiTheardHandler;
     @Autowired
     private DBConnector dbConnector ;
 
-    @Autowired
-    private DataProcessing dataProcessing;
     @GetMapping("/Test")
     public boolean testConnect() {
         return  true;
@@ -58,7 +57,10 @@ public class CloudComputing {
     @RequestMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void FileUpload(@RequestParam("file") MultipartFile file) throws IOException {
         dbConnector.CatchSoundFile(file);
-        dataProcessing.ProcessData(file);
+        multiTheardHandler=new MultiTheardHandler(file);
+        multiTheardHandler.start();
+
+
     }
 
     //public static Stack<UploadFile> DataBuffer = new Stack<UploadFile>();
