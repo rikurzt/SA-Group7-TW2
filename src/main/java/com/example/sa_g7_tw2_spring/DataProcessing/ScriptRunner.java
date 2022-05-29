@@ -47,8 +47,7 @@ public class ScriptRunner {
     public static <T> T runScript(Caster<T> caster, String cmd, File dir, String... args)  {
         try{
             //Process p = Runtime.getRuntime().exec("cmd.exe /c " + cmd + " " + String.join(" ", args),null, dir);
-            String command = cmd+" "+args[0]+" "+args[1];
-            System.out.println(command);
+            String command = cmd+" "+ String.join(" ", args);
             Process p = Runtime.getRuntime().exec(command);
 
             StreamConsumer err = new StreamConsumer(p.getErrorStream(), printCaster);

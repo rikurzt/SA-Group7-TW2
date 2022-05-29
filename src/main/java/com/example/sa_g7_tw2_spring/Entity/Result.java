@@ -8,9 +8,14 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 public class Result {
-    LocalDateTime time;
+    private LocalDateTime time;
     boolean result;
-    double length;
+    private double length;
+
+    public Result(boolean analyzeResult) {
+        result=analyzeResult;
+    }
+
     public boolean getResult() {
         return result;
     }
