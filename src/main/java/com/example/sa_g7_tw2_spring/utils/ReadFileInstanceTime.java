@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -17,7 +18,7 @@ public class ReadFileInstanceTime {
     public static LocalDateTime process() throws IOException {
         Path path = Paths.get("src/voice1.wav");
         BasicFileAttributes attributes = Files.readAttributes(path,BasicFileAttributes.class);
-        LocalDateTime t = LocalDateTime.ofInstant(attributes.creationTime().toInstant(),TimeZone.getDefault().toZoneId());
+        LocalDateTime t = LocalDateTime.ofInstant(attributes.creationTime().toInstant(), ZoneId.systemDefault());
         return t;
 
     }
