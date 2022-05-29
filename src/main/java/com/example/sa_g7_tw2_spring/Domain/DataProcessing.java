@@ -1,4 +1,4 @@
-package com.example.sa_g7_tw2_spring.DataProcessing;
+package com.example.sa_g7_tw2_spring.Domain;
 
 import com.example.sa_g7_tw2_spring.utils.ScriptRunner;
 import org.springframework.web.multipart.MultipartFile;

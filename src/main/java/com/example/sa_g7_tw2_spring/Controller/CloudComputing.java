@@ -1,8 +1,7 @@
 package com.example.sa_g7_tw2_spring.Controller;
 
-import com.example.sa_g7_tw2_spring.DataProcessing.DataProcessing;
-import com.example.sa_g7_tw2_spring.DataProcessing.AnalyzeTheard;
-import com.example.sa_g7_tw2_spring.DataProcessing.MultiThreadHandler;
+import com.example.sa_g7_tw2_spring.Domain.DataProcessing;
+import com.example.sa_g7_tw2_spring.Domain.MultiThreadHandler;
 import com.example.sa_g7_tw2_spring.Entity.Result;
 import com.example.sa_g7_tw2_spring.repository.DBConnector;
 import com.example.sa_g7_tw2_spring.utils.Reflect;

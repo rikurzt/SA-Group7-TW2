@@ -1,7 +1,7 @@
 package com.example.sa_g7_tw2_spring;
 
 import com.example.sa_g7_tw2_spring.Controller.CloudComputing;
-import com.example.sa_g7_tw2_spring.DataProcessing.DataProcessing;
+import com.example.sa_g7_tw2_spring.Domain.DataProcessing;
 
 import java.io.File;
 
