@@ -47,7 +47,7 @@ public class CloudComputing {
 
     @PostMapping("/save")
     public void saveResult(@RequestBody Result result) {
-        System.out.print(result);
+
         dbConnector.saveResult(result);
     }
 

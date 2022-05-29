@@ -9,7 +9,7 @@ import java.io.RandomAccessFile;
 public class ReadRecordLength {
 
     public static double getWavInfo() throws Exception {
-        File file = new File("src/voice1");
+        File file = new File("src/voice1.wav");
         WavInfoReader wavInfoReader = new WavInfoReader();
         RandomAccessFile raf = new RandomAccessFile(file, "r");
         // wav音频时长

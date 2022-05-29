@@ -10,15 +10,14 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 public class ReadFileInstanceTime {
 
     public static LocalDateTime process() throws IOException {
-        Path path = Paths.get("src/voice1");
+        Path path = Paths.get("src/voice1.wav");
         BasicFileAttributes attributes = Files.readAttributes(path,BasicFileAttributes.class);
-        String df="yyyy-MM-dd HH:mm:ss";
-        LocalDateTime t = LocalDateTime.parse(attributes.creationTime().toString()) ;
-
+        LocalDateTime t = LocalDateTime.ofInstant(attributes.creationTime().toInstant(),TimeZone.getDefault().toZoneId());
         return t;
 
     }
