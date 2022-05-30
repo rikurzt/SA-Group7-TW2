@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class LoginDataVo {
+public class LoginDataVO {
     private String account;
     private String password;
 }

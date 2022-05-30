@@ -4,7 +4,7 @@ import com.example.sa_g7_tw2_spring.DataAccessObject.UserDAO;
 import com.example.sa_g7_tw2_spring.Domain.DataProcessing;
 import com.example.sa_g7_tw2_spring.Domain.MultiThreadHandler;
 import com.example.sa_g7_tw2_spring.Domain.SendNotifycationToFirebase;
-import com.example.sa_g7_tw2_spring.ValueObject.LoginDataVo;
+import com.example.sa_g7_tw2_spring.ValueObject.LoginDataVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
 import com.example.sa_g7_tw2_spring.ValueObject.UserVO;
 import com.example.sa_g7_tw2_spring.DataAccessObject.ResultDAO;
@@ -69,7 +69,7 @@ public class CloudComputing {
     }
 
     @GetMapping("/login")
-    public boolean UserLogin(@RequestBody LoginDataVo loginData){
+    public boolean UserLogin(@RequestBody LoginDataVO loginData){
         boolean canlogin=userDAO.canlogin(loginData);
         return canlogin;
 

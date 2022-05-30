@@ -1,14 +1,12 @@
 package com.example.sa_g7_tw2_spring.DataAccessObject;
 
-import com.example.sa_g7_tw2_spring.ValueObject.LoginDataVo;
-import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
+import com.example.sa_g7_tw2_spring.ValueObject.LoginDataVO;
 import com.example.sa_g7_tw2_spring.ValueObject.UserVO;
 import com.example.sa_g7_tw2_spring.utils.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +26,7 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public boolean canlogin(LoginDataVo loginData) {
+    public boolean canlogin(LoginDataVO loginData) {
         String sql="SELECT * FROM analysisresult.userinformation WHERE Account = "+"\""+loginData.getAccount()+"\"";
         System.out.println(sql);
         List<UserVO> userDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
