@@ -19,10 +19,22 @@ public class UserDAO implements IUserDAO {
 
 
     @Override
-    public void update(UserVO user) {
+    public boolean update(UserVO user) {
+        String sql="SELECT * FROM analysisresult.userinformation WHERE Account = "+"\""+user.getAccount()+"\"";
+        List<UserVO> userDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
+            return new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null);
+        }).collect(Collectors.toList());
 
-        jdbcTemplate.update("INSERT INTO analysisresult.userinformation(Account, Password, Username) " +
-                "VALUES (?,?,?)",user.getAccount(), MD5.encoding(user.getPassword()),user.getUserName());
+        if(userDataFromDB==null){
+            jdbcTemplate.update("INSERT INTO analysisresult.userinformation(Account, Password, Username,gender,age,phone,familyID,familyName,familyPhone) " +
+                    "VALUES (?,?,?,?,?,?,?,?,?)"
+                    ,user.getAccount(), MD5.encoding(user.getPassword()),user.getUserName()
+                    ,user.getGender(),user.getAge(),user.getPhone(),user.getFamilyID()
+                    ,user.getFamilyName(),user.getFamilyPhone());
+            return true;
+        }
+        return false;
+
     }
 
     @Override
@@ -30,7 +42,7 @@ public class UserDAO implements IUserDAO {
         String sql="SELECT * FROM analysisresult.userinformation WHERE Account = "+"\""+loginData.getAccount()+"\"";
         System.out.println(sql);
         List<UserVO> userDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
-            return new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"));
+            return new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null);
         }).collect(Collectors.toList());
         String pw=userDataFromDB.get(0).getPassword();
         System.out.println(MD5.encoding(loginData.getPassword())+"  "+pw);

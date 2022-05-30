@@ -74,11 +74,10 @@ public class CloudComputing {
         return canlogin;
 
     }
-    @PostMapping("/newuser")
-    public void NewUser(@RequestBody UserVO user){
+    @GetMapping("/newuser")
+    public boolean NewUser(@RequestBody UserVO user){
 
-        userDAO.update(user);
-
+        return userDAO.update(user);
     }
 
     //public static Stack<UploadFile> DataBuffer = new Stack<UploadFile>();
