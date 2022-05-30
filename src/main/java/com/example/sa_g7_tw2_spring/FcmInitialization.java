@@ -9,14 +9,17 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 
 @Configuration
 public class FcmInitialization {
+
     @Bean
     void initFcm() throws IOException {
-        FirebaseOptions options = FirebaseOptions.builder()
-                .setCredentials(GoogleCredentials.getApplicationDefault())
-                .setDatabaseUrl("https://<DATABASE_NAME>.firebaseio.com/")
+        FileInputStream serviceAccount =
+                new FileInputStream("D:\\program\\SA-Group7-TW2\\src\\key\\sa-tw2-49ebb-firebase-adminsdk-8hv3f-f03ae462ec.json");
+        FirebaseOptions options = new FirebaseOptions.Builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .build();
 
         FirebaseApp.initializeApp(options);

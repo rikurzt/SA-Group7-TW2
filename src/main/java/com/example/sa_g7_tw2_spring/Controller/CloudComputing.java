@@ -1,10 +1,15 @@
 package com.example.sa_g7_tw2_spring.Controller;
 
+import com.example.sa_g7_tw2_spring.DataAccessObject.UserDAO;
 import com.example.sa_g7_tw2_spring.Domain.DataProcessing;
 import com.example.sa_g7_tw2_spring.Domain.MultiThreadHandler;
-import com.example.sa_g7_tw2_spring.Entity.Result;
-import com.example.sa_g7_tw2_spring.repository.DBConnector;
+import com.example.sa_g7_tw2_spring.Domain.SendNotifycationToFirebase;
+import com.example.sa_g7_tw2_spring.ValueObject.LoginDataVo;
+import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
+import com.example.sa_g7_tw2_spring.ValueObject.UserVO;
+import com.example.sa_g7_tw2_spring.DataAccessObject.ResultDAO;
 import com.example.sa_g7_tw2_spring.utils.Reflect;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -23,38 +28,56 @@ public class CloudComputing {
     private MultiThreadHandler multiThreadHandler;
 
     @Autowired
-    private DBConnector dbConnector ;
-
+    private ResultDAO resultDAO;
+    @Autowired
+    private UserDAO userDAO;
+    @Autowired
+    private SendNotifycationToFirebase sendNotifycationToFirebase;
     @GetMapping("/Test")
     public boolean testConnect() {
         return  true;
     }
     @GetMapping("/findall")
-    public Collection<Result> returnAll() {
-        return  dbConnector.returnAll();
+    public Collection<ResultVO> returnAll() {
+        return  resultDAO.returnAll();
     }
 
         @GetMapping("/findByToday")
-    public Collection<Result> returnByToday() {
-        return dbConnector.returnByToday();
+    public Collection<ResultVO> returnByToday() {
+        return resultDAO.returnByToday();
     }
 
     @GetMapping("/findByID/{id}")
-    public Collection<Result> returnByID(@PathVariable("id") int id) {
-        return dbConnector.returnByID(id);
+    public Collection<ResultVO> returnByID(@PathVariable("id") int id) {
+        return resultDAO.returnByID(id);
     }
 
     @PostMapping("/save")
-    public void saveResult(@RequestBody Result result) {
+    public void saveResult(@RequestBody ResultVO result) {
 
-        dbConnector.saveResult(result);
+        resultDAO.saveResult(result);
     }
 
     @RequestMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void FileUpload(@RequestParam("file") MultipartFile file) throws IOException, InterruptedException {
-        dbConnector.CatchSoundFile(file);
+    public void FileUpload(@RequestParam("file") MultipartFile file) throws IOException, InterruptedException, FirebaseMessagingException {
+        resultDAO.CatchSoundFile(file);
         multiThreadHandler.ExcudeAnalyze(file);
-        dbConnector.saveResult(multiThreadHandler.ReturnResult());
+        ResultVO finalResult = multiThreadHandler.ReturnResult();
+        resultDAO.saveResult(finalResult);
+        sendNotifycationToFirebase.send(finalResult);
+
+    }
+
+    @GetMapping("/login")
+    public boolean UserLogin(@RequestBody LoginDataVo loginData){
+        boolean canlogin=userDAO.canlogin(loginData);
+        return canlogin;
+
+    }
+    @PostMapping("/newuser")
+    public void NewUser(@RequestBody UserVO user){
+
+        userDAO.update(user);
 
     }
 

@@ -1,4 +1,4 @@
-package com.example.sa_g7_tw2_spring.Entity;
+package com.example.sa_g7_tw2_spring.ValueObject;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class Result {
+public class ResultVO {
     private LocalDateTime time;
     boolean result;
     private double length;
 
-    public Result(boolean analyzeResult) {
+    public ResultVO(boolean analyzeResult) {
         result=analyzeResult;
     }
 
