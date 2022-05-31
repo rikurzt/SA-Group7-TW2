@@ -4,10 +4,12 @@ import com.example.sa_g7_tw2_spring.DataAccessObject.UserDAO;
 import com.example.sa_g7_tw2_spring.Domain.DataProcessing;
 import com.example.sa_g7_tw2_spring.Domain.MultiThreadHandler;
 import com.example.sa_g7_tw2_spring.Domain.SendNotifycationToFirebase;
+import com.example.sa_g7_tw2_spring.ValueObject.FindRequestVO;
 import com.example.sa_g7_tw2_spring.ValueObject.LoginDataVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
 import com.example.sa_g7_tw2_spring.ValueObject.UserVO;
 import com.example.sa_g7_tw2_spring.DataAccessObject.ResultDAO;
+import com.example.sa_g7_tw2_spring.utils.ReadFileInstanceTime;
 import com.example.sa_g7_tw2_spring.utils.Reflect;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.*;
 
 
@@ -43,8 +46,8 @@ public class CloudComputing {
     }
 
         @GetMapping("/findByToday")
-    public Collection<ResultVO> returnByToday() {
-        return resultDAO.returnByToday();
+    public Collection<ResultVO> returnByToday(@RequestBody FindRequestVO findRequestVO) {
+        return resultDAO.returnByToday(findRequestVO);
     }
 
     @GetMapping("/findByID/{id}")
@@ -52,6 +55,10 @@ public class CloudComputing {
         return resultDAO.returnByID(id);
     }
 
+    @GetMapping("/findByDate")
+    public Collection<ResultVO>returnByDate(@RequestBody FindRequestVO findRequestVO ) throws ParseException {
+       return resultDAO.returnBYDate(findRequestVO);
+    }
     @PostMapping("/save")
     public void saveResult(@RequestBody ResultVO result) {
 
@@ -59,10 +66,13 @@ public class CloudComputing {
     }
 
     @RequestMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void FileUpload(@RequestParam("file") MultipartFile file) throws IOException, InterruptedException, FirebaseMessagingException {
-        resultDAO.CatchSoundFile(file);
+    public void FileUpload(@RequestParam("file") MultipartFile file,@RequestParam("wristbandID")String wristbandid ) throws IOException, InterruptedException, FirebaseMessagingException {
+        resultDAO.SoundFileToDB(file);
         multiThreadHandler.ExcudeAnalyze(file);
-        ResultVO finalResult = multiThreadHandler.ReturnResult();
+        ResultVO finalResult =new ResultVO(multiThreadHandler.ReturnFileTime()
+                ,multiThreadHandler.ReturnResult()
+                , multiThreadHandler.ReturnRecordLength()
+                , wristbandid); ;
         resultDAO.saveResult(finalResult);
         sendNotifycationToFirebase.send(finalResult);
 

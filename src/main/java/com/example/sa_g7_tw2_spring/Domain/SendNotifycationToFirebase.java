@@ -21,7 +21,7 @@ public class SendNotifycationToFirebase {
                 .putData("upload_date", result.getTime().toString())
                 .putData("is_parksion", String.valueOf(result.getResult()))
                 .putData("length", String.valueOf(result.getLength()))
-                .setToken("")
+                .setToken("d8fDn4URTk-oBammFrVz0Y:APA91bGhzVCRnmzxua3XkYigFXXefojOom0T8trz8TPtPEcxEljgtCifNdJys6Rytk3EHkgHEfYyE5o_OGZT14wYprpBDfTCWUfFgoeqPdgukReaK7paTxqzyQOdXmsgwS1f7Su5hMhB")
                 .build();
         FirebaseMessaging.getInstance().send(message);
     }

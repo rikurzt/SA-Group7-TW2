@@ -1,16 +1,12 @@
 package com.example.sa_g7_tw2_spring.ValueObject;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-
-
-
 @Data
 @AllArgsConstructor
-public class LoginDataVO {
+public class FindRequestVO {
     private String account;
-    private String password;
+    private String token;
+    private String message;
 
 }

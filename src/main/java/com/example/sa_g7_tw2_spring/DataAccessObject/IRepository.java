@@ -1,7 +1,7 @@
 package com.example.sa_g7_tw2_spring.DataAccessObject;
 
+import com.example.sa_g7_tw2_spring.ValueObject.FindRequestVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
-import com.example.sa_g7_tw2_spring.ValueObject.UserVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -13,13 +13,13 @@ public interface IRepository{
 
     public Collection<ResultVO> returnAll();
 
-    public Collection<ResultVO> returnByToday();
+    public Collection<ResultVO> returnByToday(FindRequestVO findRequestVO);
 
     public Collection<ResultVO> returnByID(int id);
-    public Collection<ResultVO>returnBYDate(String date) throws ParseException;
+    public Collection<ResultVO>returnBYDate(FindRequestVO findRequestVO) throws ParseException;
     public void saveResult(ResultVO result);
 
-    public void CatchSoundFile(MultipartFile file) throws IOException;
+    public void SoundFileToDB(MultipartFile file) throws IOException;
 
 
 }

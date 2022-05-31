@@ -1,5 +1,6 @@
 package com.example.sa_g7_tw2_spring.DataAccessObject;
 
+import com.example.sa_g7_tw2_spring.ValueObject.FindRequestVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
 import com.example.sa_g7_tw2_spring.ValueObject.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class ResultDAO implements IRepository {
     private JdbcTemplate jdbcTemplate;
     private Collection<ResultVO> resultList(String sql){
         return jdbcTemplate.queryForList(sql).stream().map(map->{
-            return new ResultVO((LocalDateTime) map.get("up_date"),(Boolean)map.get("result"),(Double)map.get("record_len"));
+            return new ResultVO((LocalDateTime) map.get("up_date"),(Boolean)map.get("result"),(Double)map.get("record_len"),(String)map.get("wistband_ID"));
         }).collect(Collectors.toList());
 
     }
@@ -36,10 +37,10 @@ public class ResultDAO implements IRepository {
     }
 
     @Override
-    public Collection<ResultVO> returnByToday() {
+    public Collection<ResultVO> returnByToday(FindRequestVO findRequestVO) {
         LocalDateTime today = LocalDateTime.now();
         String sql="SELECT * FROM analysisresult.analysis WHERE DATE(up_date) =" +
-                "\""+DateTimeFormatter.ofPattern("yyyy-MM-dd").format(today)+"\"";
+                "\""+DateTimeFormatter.ofPattern("yyyy-MM-dd").format(today)+"\""+" WHERE Account = "+"\""+findRequestVO.getAccount()+"\"";
         System.out.print(sql);
         return resultList(sql);
     }
@@ -51,33 +52,25 @@ public class ResultDAO implements IRepository {
     }
 
     @Override
-    public Collection<ResultVO> returnBYDate(String date) throws ParseException {
+    public Collection<ResultVO> returnBYDate(FindRequestVO findRequestVO) throws ParseException {
         String sql="SELECT * FROM analysisresult.analysis WHERE DATE(up_date) =" +
-                "\""+new SimpleDateFormat("yyyy-MM-dd").parse(date) +"\"";
+                "\""+new SimpleDateFormat("yyyy-MM-dd").parse(findRequestVO.getMessage()) +"\" "+
+                " WHERE Account = "+"\""+findRequestVO.getAccount()+"\"";
         System.out.print(sql);
         return resultList(sql);
     }
 
     @Override
     public void saveResult(ResultVO result) {
-        jdbcTemplate.update("INSERT INTO analysisresult.analysis(up_date, result, record_len) " +
-                "VALUES (?,?,?)",result.getTime(),result.getResult(),result.getLength());
+        jdbcTemplate.update("INSERT INTO analysisresult.analysis(up_date, result, record_len,wristband_ID) " +
+                "VALUES (?,?,?,?)",result.getTime(),result.getResult(),result.getLength(),result.getWristbandID());
     }
 
     @Override
-    public void CatchSoundFile(MultipartFile file) throws IOException {
-        File convertFile = new File("/file"+file.getOriginalFilename());
-
-        convertFile.createNewFile();
-        FileOutputStream fout = new FileOutputStream(convertFile);
-        fout.write(file.getBytes());
-        for(byte b : file.getBytes()){
-            //System.out.print(Integer.toHexString(b));
-        }
-        System.out.println(convertFile.getAbsolutePath());
+    public void SoundFileToDB(MultipartFile file) throws IOException {
         jdbcTemplate.update("INSERT INTO analysisresult.voicefile(content) " +
                 "VALUES (?)",file.getBytes());
-        fout.close();
+
     }
 
 

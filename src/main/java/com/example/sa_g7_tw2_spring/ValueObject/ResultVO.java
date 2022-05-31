@@ -11,10 +11,8 @@ public class ResultVO {
     private LocalDateTime time;
     boolean result;
     private double length;
+    private String wristbandID;
 
-    public ResultVO(boolean analyzeResult) {
-        result=analyzeResult;
-    }
 
     public boolean getResult() {
         return result;

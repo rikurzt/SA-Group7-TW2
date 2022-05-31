@@ -22,7 +22,7 @@ public class UserDAO implements IUserDAO {
     public boolean update(UserVO user) {
         String sql="SELECT * FROM analysisresult.userinformation WHERE Account = "+"\""+user.getAccount()+"\"";
         List<UserVO> userDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
-            return new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null);
+            return new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null,null);
         }).collect(Collectors.toList());
 
         if(userDataFromDB==null){
@@ -42,7 +42,7 @@ public class UserDAO implements IUserDAO {
         String sql="SELECT * FROM analysisresult.userinformation WHERE Account = "+"\""+loginData.getAccount()+"\"";
         System.out.println(sql);
         List<UserVO> userDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
-            return new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null);
+            return new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null,null);
         }).collect(Collectors.toList());
         String pw=userDataFromDB.get(0).getPassword();
         System.out.println(MD5.encoding(loginData.getPassword())+"  "+pw);

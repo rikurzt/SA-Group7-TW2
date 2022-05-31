@@ -16,4 +16,6 @@ public class UserVO {
     private String familyName;
     private String familyPhone;
 
+    private String token;
+
 }
