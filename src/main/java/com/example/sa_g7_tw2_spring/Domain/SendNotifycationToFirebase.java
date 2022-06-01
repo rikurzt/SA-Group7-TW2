@@ -1,13 +1,12 @@
 package com.example.sa_g7_tw2_spring.Domain;
 
 import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
-import lombok.val;
+
+import com.google.firebase.messaging.*;
+
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -15,16 +14,23 @@ public class SendNotifycationToFirebase {
 
 
     public void send(ResultVO result) throws FirebaseMessagingException, ExecutionException, InterruptedException {
-        val message = Message.builder()
-                .setNotification(Notification.builder()
-                        .setTitle("From Wayne's Talk")
-                        .setBody("Hello Wayns's Talk")
-                        .build())
-                .putData("upload_date", result.getTime().toString())
-                .putData("is_parksion", String.valueOf(result.getResult()))
-                .putData("length", String.valueOf(result.getLength()))
-                .setToken("d8fDn4URTk-oBammFrVz0Y:APA91bGhzVCRnmzxua3XkYigFXXefojOom0T8trz8TPtPEcxEljgtCifNdJys6Rytk3EHkgHEfYyE5o_OGZT14wYprpBDfTCWUfFgoeqPdgukReaK7paTxqzyQOdXmsgwS1f7Su5hMhB")
+        AndroidConfig androidConfig =AndroidConfig.builder()
+                .setTtl(Duration.ofMinutes(2).toMillis())
+                .setCollapseKey("topic")
+                .setPriority(AndroidConfig.Priority.HIGH)
+                .setNotification(AndroidNotification.builder().setSound("default").setColor("#ffffff").build())
                 .build();
-        FirebaseMessaging.getInstance().sendAsync(message).get();
+        ApnsConfig apnsConfig = ApnsConfig.builder().setAps(Aps.builder().setCategory("topic").setThreadId("topic").build()).build();
+        Message m= Message.builder()
+                .setApnsConfig(apnsConfig)
+                .setAndroidConfig(androidConfig)
+                .setNotification(Notification.builder()
+                        .setBody("Analyze is Done")
+                        .setTitle("Parkinson Diesase Notification").build())
+                .setToken("ecrWgHWUfUs:APA91bGVcTTiydeg5Oxhguxoi5gbpoQqxhIwFccbw4xd-3QyV4mwx6YAwlMM1i5CMAebEl6iEddeOuaItDQmmYHH6APlmimqHLrCyqn1QWPl-OE0tRVkR2YWkAALwuowypahJN4YwSrx")
+                .build();
+
+        FirebaseMessaging.getInstance().sendAsync(m).get();
     }
+
 }

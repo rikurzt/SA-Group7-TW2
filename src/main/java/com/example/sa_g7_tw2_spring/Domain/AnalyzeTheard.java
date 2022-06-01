@@ -51,13 +51,4 @@ public class AnalyzeTheard extends Thread{
         }
 
     }
-    public boolean getResult(){
-        return analyzeResult;
-    }
-    public LocalDateTime getfileTime(){
-        return fileTime;
-    }
-    public Double getrecordLength(){
-        return recordLength;
-    }
 }

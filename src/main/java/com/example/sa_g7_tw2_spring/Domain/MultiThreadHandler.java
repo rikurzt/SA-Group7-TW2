@@ -14,8 +14,7 @@ import java.util.ArrayList;
 
 @Service
 public class MultiThreadHandler {
-    @Resource
-    ResultProcessDAO resultProcessDAO;
+
     @Resource
     JdbcTemplate jdbcTemplate;
     public void ExcudeAnalyze(File f)  {
