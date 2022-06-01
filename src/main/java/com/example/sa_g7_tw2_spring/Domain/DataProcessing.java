@@ -9,39 +9,9 @@ import java.util.Arrays;
 
 public class DataProcessing {
     int nonce = 0;
-    public double[] ProcessData(MultipartFile file){
-        byte rawData[];
-        try {
-            rawData = file.getBytes();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        nonce++;
+    public double[] ProcessData(File voiceFile){
 
-        File voiceFile = new File("src/voice"+nonce+".wav");
-        if(!voiceFile.exists()){
-            try {
-                voiceFile.createNewFile();
-            } catch (IOException e) {
-                return null;
-            }
-        }
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(voiceFile);
-            fos.write(rawData);
-            fos.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            try {
-                if(fos != null)
-                    fos.close();
-            } catch (IOException e) { }
-        }
         File processPythonFile = new File("src/py/data_processing.py");
-
-
         double[] result = ScriptRunner.runScript((BufferedReader br)->{
             try{
 

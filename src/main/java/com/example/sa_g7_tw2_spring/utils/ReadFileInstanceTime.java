@@ -18,7 +18,7 @@ public class ReadFileInstanceTime {
     public static LocalDateTime process() throws IOException {
         Path path = Paths.get("src/voice1.wav");
         BasicFileAttributes attributes = Files.readAttributes(path,BasicFileAttributes.class);
-        LocalDateTime t = LocalDateTime.ofInstant(attributes.creationTime().toInstant(), ZoneId.systemDefault());
+        LocalDateTime t = LocalDateTime.ofInstant(attributes.lastModifiedTime().toInstant(), ZoneId.systemDefault());
         return t;
 
     }

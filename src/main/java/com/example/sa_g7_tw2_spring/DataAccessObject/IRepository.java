@@ -17,9 +17,7 @@ public interface IRepository{
 
     public Collection<ResultVO> returnByID(int id);
     public Collection<ResultVO>returnBYDate(FindRequestVO findRequestVO) throws ParseException;
-    public void saveResult(ResultVO result);
 
-    public void SoundFileToDB(MultipartFile file) throws IOException;
 
 
 }

@@ -16,7 +16,7 @@ public class FcmInitialization {
     @Bean
     void initFcm() throws IOException {
         FileInputStream serviceAccount =
-                new FileInputStream("D:\\program\\SA-Group7-TW2\\src\\key\\wristband-b834c-firebase-adminsdk-u0lad-cab82cd880.json");
+                new FileInputStream("D:\\program\\SA-Group7-TW2\\src\\key\\sa-tw2-49ebb-firebase-adminsdk-8hv3f-f03ae462ec.json");
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .build();

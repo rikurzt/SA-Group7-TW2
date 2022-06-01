@@ -8,11 +8,13 @@ import com.google.firebase.messaging.Notification;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.ExecutionException;
+
 @Service
 public class SendNotifycationToFirebase {
 
 
-    public void send(ResultVO result) throws FirebaseMessagingException {
+    public void send(ResultVO result) throws FirebaseMessagingException, ExecutionException, InterruptedException {
         val message = Message.builder()
                 .setNotification(Notification.builder()
                         .setTitle("From Wayne's Talk")
@@ -23,6 +25,6 @@ public class SendNotifycationToFirebase {
                 .putData("length", String.valueOf(result.getLength()))
                 .setToken("d8fDn4URTk-oBammFrVz0Y:APA91bGhzVCRnmzxua3XkYigFXXefojOom0T8trz8TPtPEcxEljgtCifNdJys6Rytk3EHkgHEfYyE5o_OGZT14wYprpBDfTCWUfFgoeqPdgukReaK7paTxqzyQOdXmsgwS1f7Su5hMhB")
                 .build();
-        FirebaseMessaging.getInstance().send(message);
+        FirebaseMessaging.getInstance().sendAsync(message).get();
     }
 }
