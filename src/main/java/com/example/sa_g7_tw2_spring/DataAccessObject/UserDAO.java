@@ -1,12 +1,15 @@
 package com.example.sa_g7_tw2_spring.DataAccessObject;
 
 import com.example.sa_g7_tw2_spring.ValueObject.LoginDataVO;
+import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
 import com.example.sa_g7_tw2_spring.ValueObject.UserVO;
 import com.example.sa_g7_tw2_spring.utils.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +20,12 @@ public class UserDAO implements IUserDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    private Collection<String> resultList(String sql){
+        return jdbcTemplate.queryForList(sql).stream().map(map->{
+            return new String(map.get("token").toString());
+        }).collect(Collectors.toList());
 
+    }
     @Override
     public boolean update(UserVO user) {
         String sql="SELECT * FROM analysisresult.userinformation WHERE Account = "+"\""+user.getAccount()+"\"";
@@ -38,6 +46,14 @@ public class UserDAO implements IUserDAO {
         }
 
 
+    }
+    public String returnTokenByID(double i,JdbcTemplate jdbcTemplate) {
+        String sql="SELECT * FROM analysisresult.userinformation WHERE ID = "+i;
+
+        String token=jdbcTemplate.queryForList(sql).stream().map(map->{
+            return new String(map.get("token").toString());
+        }).collect(Collectors.toList()).get(0);
+        return token;
     }
 
     @Override

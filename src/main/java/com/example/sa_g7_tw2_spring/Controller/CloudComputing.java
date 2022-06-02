@@ -17,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
@@ -39,39 +37,24 @@ public class CloudComputing {
     private ResultProcessDAO resultProcessDAO;
     @Autowired
     private UserDAO userDAO;
-    @Autowired
-    private SendNotifycationToFirebase sendNotifycationToFirebase;
     @GetMapping("/Test")
     public boolean testConnect() {
         return  true;
-    }
-    @GetMapping("/findall")
-    public Collection<ResultVO> returnAll() {
-        return  resultQueryDAO.returnAll();
     }
 
         @GetMapping("/findByToday")
     public Collection<ResultVO> returnByToday(@RequestBody FindRequestVO findRequestVO) {
         return resultQueryDAO.returnByToday(findRequestVO);
     }
-
-    @GetMapping("/findByID/{id}")
-    public Collection<ResultVO> returnByID(@PathVariable("id") int id) {
-        return resultQueryDAO.returnByID(id);
-    }
-
     @GetMapping("/findByDate")
     public Collection<ResultVO>returnByDate(@RequestBody FindRequestVO findRequestVO ) throws ParseException {
        return resultQueryDAO.returnBYDate(findRequestVO);
     }
-
-
     @RequestMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void FileUpload(@RequestParam("file") MultipartFile file,@RequestParam("id") Double id )throws IOException, InterruptedException, FirebaseMessagingException, ExecutionException {
         resultProcessDAO.SoundFileToDB(file,id);
         multiThreadHandler.ExcudeAnalyze(CreateLocalFile.process(file),id);
     }
-
     @GetMapping("/login")
     public boolean UserLogin(@RequestBody LoginDataVO loginData){
         boolean canlogin=userDAO.canlogin(loginData);
@@ -83,16 +66,6 @@ public class CloudComputing {
 
         return userDAO.update(user);
     }
-    @GetMapping("/testsend")
-    public void testsend() throws ExecutionException, FirebaseMessagingException, InterruptedException {
-        ResultVO finalResult =new ResultVO(LocalDateTime.now()
-                ,true
-                , 12.2
-                ,1); ;
-        sendNotifycationToFirebase.send(finalResult);
-
-    }
-
 
 }
 

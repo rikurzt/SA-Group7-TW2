@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AI {
+public class AIRunner {
 
     public boolean Analyze(double[] data){
         File processPythonFile = new File("src/py/ai.py");

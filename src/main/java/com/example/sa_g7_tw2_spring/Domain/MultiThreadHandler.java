@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class MultiThreadHandler {
 
     @Resource
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
     public void ExcudeAnalyze(File f,double id)  {
 
 

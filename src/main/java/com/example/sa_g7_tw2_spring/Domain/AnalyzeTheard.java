@@ -1,6 +1,7 @@
 package com.example.sa_g7_tw2_spring.Domain;
 
 import com.example.sa_g7_tw2_spring.DataAccessObject.ResultProcessDAO;
+import com.example.sa_g7_tw2_spring.DataAccessObject.UserDAO;
 import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
 import org.jaudiotagger.audio.wav.util.WavInfoReader;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,13 +20,13 @@ import java.time.ZoneId;
 
 public class AnalyzeTheard extends Thread{
 
-    private AI aicom;
+    private AIRunner aicom;
     private DataProcessing dataProcessing;
     private File file;
     private boolean isParkinson;
     private LocalDateTime fileTime;
     private double recordLength;
-    private SendNotifycationToFirebase sendNotifycationToFirebase= new SendNotifycationToFirebase();
+    private SendNotifycationToFirebase sendNotifycationToFirebase=new SendNotifycationToFirebase();
     private JdbcTemplate jdbcTemplate;
     private double id;
     public AnalyzeTheard(File f, JdbcTemplate jdbcTemplate, double id) {
@@ -36,10 +37,12 @@ public class AnalyzeTheard extends Thread{
 
     @Resource
     private ResultProcessDAO resultProcessDAO = new ResultProcessDAO();
+    @Resource
+    private UserDAO userDAO = new UserDAO();
 
     @Override
     public synchronized void run(){
-        aicom= new AI();
+        aicom= new AIRunner();
         dataProcessing = new DataProcessing();
         try {
             double processResult[] =dataProcessing.ProcessData(file);
@@ -48,8 +51,8 @@ public class AnalyzeTheard extends Thread{
             recordLength = getWavInfo(file);
             ResultVO resultVO =new ResultVO(fileTime, isParkinson,recordLength,id);
 
-            resultProcessDAO.saveResult(resultVO,jdbcTemplate);
-            sendNotifycationToFirebase.send(resultVO);
+            resultProcessDAO.saveResult(resultVO,jdbcTemplate,id);
+            sendNotifycationToFirebase.send(resultVO,jdbcTemplate,userDAO);
 
         } catch (IOException e) {
             throw new RuntimeException(e);

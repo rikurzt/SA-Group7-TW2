@@ -13,7 +13,7 @@ import java.io.IOException;
 public class ResultProcessDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate ;
-    public void saveResult(ResultVO result, JdbcTemplate jdbcTemplate) {
+    public void saveResult(ResultVO result, JdbcTemplate jdbcTemplate, double id) {
 
         jdbcTemplate.update("INSERT INTO analysisresult.analysis(up_date, result, record_len,userID) " +
                 "VALUES (?,?,?,?)",result.getTime(),result.getResult(),result.getLength(),result.getID());
