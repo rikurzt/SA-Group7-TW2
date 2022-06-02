@@ -6,7 +6,6 @@ import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
 import org.jaudiotagger.audio.wav.util.WavInfoReader;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -29,16 +28,15 @@ public class AnalyzeTheard extends Thread{
     private SendNotifycationToFirebase sendNotifycationToFirebase=new SendNotifycationToFirebase();
     private JdbcTemplate jdbcTemplate;
     private double id;
-    public AnalyzeTheard(File f, JdbcTemplate jdbcTemplate, double id) {
+    private ResultProcessDAO resultProcessDAO;
+    private UserDAO userDAO;
+    public AnalyzeTheard(File f, JdbcTemplate jdbcTemplate, double id, UserDAO userDAO, ResultProcessDAO resultProcessDAO) {
         file=f;
         this.jdbcTemplate=jdbcTemplate;
         this.id=id;
+        this.resultProcessDAO = resultProcessDAO;
+        this.userDAO = userDAO;
     }
-
-    @Resource
-    private ResultProcessDAO resultProcessDAO = new ResultProcessDAO();
-    @Resource
-    private UserDAO userDAO = new UserDAO();
 
     @Override
     public synchronized void run(){

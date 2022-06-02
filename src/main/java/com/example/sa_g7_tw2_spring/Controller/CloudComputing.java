@@ -53,7 +53,7 @@ public class CloudComputing {
     @RequestMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void FileUpload(@RequestParam("file") MultipartFile file,@RequestParam("id") Double id )throws IOException, InterruptedException, FirebaseMessagingException, ExecutionException {
         resultProcessDAO.SoundFileToDB(file,id);
-        multiThreadHandler.ExcudeAnalyze(CreateLocalFile.process(file),id);
+        multiThreadHandler.ExcudeAnalyze(CreateLocalFile.process(file),id,userDAO,resultProcessDAO);
     }
     @GetMapping("/login")
     public boolean UserLogin(@RequestBody LoginDataVO loginData){
