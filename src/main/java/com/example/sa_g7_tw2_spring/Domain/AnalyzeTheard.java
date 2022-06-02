@@ -2,14 +2,19 @@ package com.example.sa_g7_tw2_spring.Domain;
 
 import com.example.sa_g7_tw2_spring.DataAccessObject.ResultProcessDAO;
 import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
-import com.example.sa_g7_tw2_spring.utils.ReadFileInstanceTime;
-import com.example.sa_g7_tw2_spring.utils.ReadRecordLength;
+import org.jaudiotagger.audio.wav.util.WavInfoReader;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 
 public class AnalyzeTheard extends Thread{
@@ -17,14 +22,16 @@ public class AnalyzeTheard extends Thread{
     private AI aicom;
     private DataProcessing dataProcessing;
     private File file;
-    private boolean analyzeResult;
+    private boolean isParkinson;
     private LocalDateTime fileTime;
     private double recordLength;
     private SendNotifycationToFirebase sendNotifycationToFirebase= new SendNotifycationToFirebase();
     private JdbcTemplate jdbcTemplate;
-    public AnalyzeTheard(File f, JdbcTemplate jdbcTemplate) {
+    private double id;
+    public AnalyzeTheard(File f, JdbcTemplate jdbcTemplate, double id) {
         file=f;
         this.jdbcTemplate=jdbcTemplate;
+        this.id=id;
     }
 
     @Resource
@@ -36,10 +43,10 @@ public class AnalyzeTheard extends Thread{
         dataProcessing = new DataProcessing();
         try {
             double processResult[] =dataProcessing.ProcessData(file);
-            analyzeResult = aicom.Analyze(processResult);
-            fileTime= ReadFileInstanceTime.process();
-            recordLength = ReadRecordLength.getWavInfo();
-            ResultVO resultVO =new ResultVO(fileTime,analyzeResult,recordLength,"");
+            isParkinson = aicom.Analyze(processResult);
+            fileTime= ReadFileLastModifiedTime(file);
+            recordLength = getWavInfo(file);
+            ResultVO resultVO =new ResultVO(fileTime, isParkinson,recordLength,id);
 
             resultProcessDAO.saveResult(resultVO,jdbcTemplate);
             sendNotifycationToFirebase.send(resultVO);
@@ -50,5 +57,35 @@ public class AnalyzeTheard extends Thread{
             throw new RuntimeException(e);
         }
 
+    }
+    public  LocalDateTime ReadFileLastModifiedTime(File file) throws IOException {
+        Path path = Paths.get(file.getAbsolutePath());
+        BasicFileAttributes attributes = Files.readAttributes(path,BasicFileAttributes.class);
+        LocalDateTime t = LocalDateTime.ofInstant(attributes.lastModifiedTime().toInstant(), ZoneId.systemDefault());
+        return t;
+
+    }
+    public  double getWavInfo(File file) throws Exception {
+        WavInfoReader wavInfoReader = new WavInfoReader();
+        RandomAccessFile raf = new RandomAccessFile(file, "r");
+        // wav音频时长
+        long duration = (long) (wavInfoReader.read(raf).getPreciseLength() * 1000);
+        // wav音频采样率
+        int sampleRate = toInt(read(raf, 24, 4));
+        System.out.println("duration -> " + duration + ",sampleRate -> " + sampleRate);
+        raf.close();
+        return duration;
+    }
+    public  int toInt(byte[] b) {
+        return ((b[3] << 24) + (b[2] << 16) + (b[1] << 8) + (b[0]));
+    }
+
+    public  byte[] read(RandomAccessFile rdf, int pos, int length) throws IOException {
+        rdf.seek(pos);
+        byte[] result = new byte[length];
+        for (int i = 0; i < length; i++) {
+            result[i] = rdf.readByte();
+        }
+        return result;
     }
 }

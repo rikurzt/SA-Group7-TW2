@@ -15,14 +15,14 @@ public class ResultProcessDAO {
     private JdbcTemplate jdbcTemplate ;
     public void saveResult(ResultVO result, JdbcTemplate jdbcTemplate) {
 
-        jdbcTemplate.update("INSERT INTO analysisresult.analysis(up_date, result, record_len,wristband_ID) " +
-                "VALUES (?,?,?,?)",result.getTime(),result.getResult(),result.getLength(),result.getWristbandID());
+        jdbcTemplate.update("INSERT INTO analysisresult.analysis(up_date, result, record_len,userID) " +
+                "VALUES (?,?,?,?)",result.getTime(),result.getResult(),result.getLength(),result.getID());
     }
 
 
-    public void SoundFileToDB(MultipartFile file) throws IOException {
-        jdbcTemplate.update("INSERT INTO analysisresult.voicefile(content) " +
-                "VALUES (?)",file.getBytes());
+    public void SoundFileToDB(MultipartFile file, Double userid) throws IOException {
+        jdbcTemplate.update("INSERT INTO analysisresult.voicefile(content,userID) " +
+                "VALUES (?,?)",file.getBytes(),userid);
 
     }
 }

@@ -67,9 +67,9 @@ public class CloudComputing {
 
 
     @RequestMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void FileUpload(@RequestParam("file") MultipartFile file,@RequestParam("wristbandID")String wristbandid ) throws IOException, InterruptedException, FirebaseMessagingException, ExecutionException {
-        resultProcessDAO.SoundFileToDB(file);
-        multiThreadHandler.ExcudeAnalyze(CreateLocalFile.process(file));
+    public void FileUpload(@RequestParam("file") MultipartFile file,@RequestParam("id") Double id )throws IOException, InterruptedException, FirebaseMessagingException, ExecutionException {
+        resultProcessDAO.SoundFileToDB(file,id);
+        multiThreadHandler.ExcudeAnalyze(CreateLocalFile.process(file),id);
     }
 
     @GetMapping("/login")
@@ -88,15 +88,11 @@ public class CloudComputing {
         ResultVO finalResult =new ResultVO(LocalDateTime.now()
                 ,true
                 , 12.2
-                , "test"); ;
+                ,1); ;
         sendNotifycationToFirebase.send(finalResult);
 
     }
 
-    //public static Stack<UploadFile> DataBuffer = new Stack<UploadFile>();
 
-    public int getNonce(Class<?> clazz, DataProcessing dataProcessing){
-        return Reflect.get(dataProcessing, "nonce");
-    }
 }
 

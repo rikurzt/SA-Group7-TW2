@@ -22,7 +22,7 @@ public class ResultQueryDAO implements IRepository {
     private JdbcTemplate jdbcTemplate;
     private Collection<ResultVO> resultList(String sql){
         return jdbcTemplate.queryForList(sql).stream().map(map->{
-            return new ResultVO((LocalDateTime) map.get("up_date"),(Boolean)map.get("result"),(Double)map.get("record_len"),(String)map.get("wistband_ID"));
+            return new ResultVO((LocalDateTime) map.get("up_date"),(Boolean)map.get("result"),(Double)map.get("record_len"),(Double)map.get("ID"));
         }).collect(Collectors.toList());
 
     }

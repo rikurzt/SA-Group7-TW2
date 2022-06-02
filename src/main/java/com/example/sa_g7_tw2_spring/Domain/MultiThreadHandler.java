@@ -17,10 +17,10 @@ public class MultiThreadHandler {
 
     @Resource
     JdbcTemplate jdbcTemplate;
-    public void ExcudeAnalyze(File f)  {
+    public void ExcudeAnalyze(File f,double id)  {
 
 
-        AnalyzeTheard theard = new AnalyzeTheard(f,jdbcTemplate);
+        AnalyzeTheard theard = new AnalyzeTheard(f,jdbcTemplate,id);
         theard.start();
 
     }

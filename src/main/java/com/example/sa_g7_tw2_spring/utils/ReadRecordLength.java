@@ -19,8 +19,6 @@ public class ReadRecordLength {
         System.out.println("duration -> " + duration + ",sampleRate -> " + sampleRate);
         raf.close();
         return duration;
-
-
     }
     public static int toInt(byte[] b) {
         return ((b[3] << 24) + (b[2] << 16) + (b[1] << 8) + (b[0]));
