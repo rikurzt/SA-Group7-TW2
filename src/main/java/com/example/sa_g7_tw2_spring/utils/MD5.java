@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class MD5 {
     public static String encoding(String pw) {
-        String str = pw;  //要加密的字串
+        String str = pw;
         String encoded;
         char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
