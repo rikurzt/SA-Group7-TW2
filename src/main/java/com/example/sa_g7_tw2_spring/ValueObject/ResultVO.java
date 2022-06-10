@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 public class ResultVO {
-    private LocalDateTime time;
-    boolean result;
-    private double length;
-    private double ID;
+    private final LocalDateTime time;
+    boolean final result;
+    private final double length;
+    private final double ID;
 
 
     public boolean getResult() {

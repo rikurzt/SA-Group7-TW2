@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class LoginDataVO {
-    private String account;
-    private String password;
+    private final String account;
+    private final String password;
 
 }

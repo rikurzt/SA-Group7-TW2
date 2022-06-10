@@ -6,16 +6,16 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class UserVO {
-    private String account;
-    private String userName;
-    private String password;
-    private String gender;
-    private int age;
-    private String phone;
-    private String familyID;
-    private String familyName;
-    private String familyPhone;
-    private String token;
+    private final String account;
+    private final String userName;
+    private final String password;
+    private final String gender;
+    private final int age;
+    private final String phone;
+    private final String familyID;
+    private final String familyName;
+    private final String familyPhone;
+    private final String token;
 
 
 }

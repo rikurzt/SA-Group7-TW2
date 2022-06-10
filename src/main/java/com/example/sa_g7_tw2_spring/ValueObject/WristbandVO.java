@@ -8,6 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 @AllArgsConstructor
 public class WristbandVO {
-    private String wristbandID;
-    private MultipartFile file;
+    private final String wristbandID;
+    private final MultipartFile file;
 }

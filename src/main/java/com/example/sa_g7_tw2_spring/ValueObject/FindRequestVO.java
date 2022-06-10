@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class FindRequestVO {
-    private String account;
-    private String token;
-    private String message;
+    private final String account;
+    private final String token;
+    private final String message;
 
 }
