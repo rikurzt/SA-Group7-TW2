@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 
 @Repository
-public class UserDAO implements IUserDAO {
+public class UserDAO{
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -26,7 +26,6 @@ public class UserDAO implements IUserDAO {
         }).collect(Collectors.toList());
 
     }
-    @Override
     public boolean update(UserVO user) {
         String sql="SELECT * FROM analysisresult.userinformation WHERE Account = "+"\""+user.getAccount()+"\"";
         System.out.println(user.getAccount());
@@ -56,7 +55,6 @@ public class UserDAO implements IUserDAO {
         return token;
     }
 
-    @Override
     public boolean canlogin(LoginDataVO loginData) {
         String sql="SELECT * FROM analysisresult.userinformation WHERE Account = "+"\""+loginData.getAccount()+"\"";
         System.out.println(sql);

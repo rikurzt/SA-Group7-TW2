@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ResultVO {
     private final LocalDateTime time;
-    boolean final result;
+    private final boolean result;
     private final double length;
     private final double ID;
 

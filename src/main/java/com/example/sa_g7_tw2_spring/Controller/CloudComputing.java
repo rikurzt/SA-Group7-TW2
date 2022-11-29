@@ -28,9 +28,10 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/db")
 public class CloudComputing {
 
+    //做Command pattern的reciver 將DAO分出去
+
     @Autowired
     private MultiThreadHandler multiThreadHandler;
-
     @Autowired
     private ResultQueryDAO resultQueryDAO;
     @Autowired

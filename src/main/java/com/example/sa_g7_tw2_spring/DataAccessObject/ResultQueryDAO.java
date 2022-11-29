@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Repository
-public class ResultQueryDAO implements IRepository {
+public class ResultQueryDAO {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -27,13 +27,11 @@ public class ResultQueryDAO implements IRepository {
 
     }
 
-    @Override
+
     public Collection<ResultVO> returnAll() {
         String sql="SELECT * FROM analysisresult.analysis";
         return resultList(sql);
     }
-
-    @Override
     public Collection<ResultVO> returnByToday(FindRequestVO findRequestVO) {
         LocalDateTime today = LocalDateTime.now();
         String sql="SELECT * FROM analysisresult.analysis WHERE DATE(up_date) =" +
@@ -41,14 +39,13 @@ public class ResultQueryDAO implements IRepository {
         System.out.print(sql);
         return resultList(sql);
     }
-    @Override
+
     public Collection<ResultVO> returnByID(int i) {
         String sql="SELECT * FROM analysisresult.analysis WHERE ID = "+i;
         System.out.print(sql);
         return resultList(sql);
     }
 
-    @Override
     public Collection<ResultVO> returnBYDate(FindRequestVO findRequestVO) throws ParseException {
         String sql="SELECT * FROM analysisresult.analysis WHERE DATE(up_date) =" +
                 "\""+new SimpleDateFormat("yyyy-MM-dd").parse(findRequestVO.getMessage()) +"\" "+
@@ -56,9 +53,5 @@ public class ResultQueryDAO implements IRepository {
         System.out.print(sql);
         return resultList(sql);
     }
-
-
-
-
 
 }
