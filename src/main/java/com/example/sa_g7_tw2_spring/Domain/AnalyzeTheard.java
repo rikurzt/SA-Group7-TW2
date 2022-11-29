@@ -3,6 +3,8 @@ package com.example.sa_g7_tw2_spring.Domain;
 import com.example.sa_g7_tw2_spring.DataAccessObject.ResultProcessDAO;
 import com.example.sa_g7_tw2_spring.DataAccessObject.UserDAO;
 import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
+import com.example.sa_g7_tw2_spring.pattern.ObservableSubject;
+import com.example.sa_g7_tw2_spring.pattern.Observer;
 import org.jaudiotagger.audio.wav.util.WavInfoReader;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -15,9 +17,11 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class AnalyzeTheard extends Thread{
+public class AnalyzeTheard extends Thread implements ObservableSubject {
 
     private AIRunner aicom;
     private DataProcessing dataProcessing;
@@ -30,6 +34,9 @@ public class AnalyzeTheard extends Thread{
     private double id;
     private ResultProcessDAO resultProcessDAO;
     private UserDAO userDAO;
+
+    private List<Observer> observers = new ArrayList<>();
+
     public AnalyzeTheard(File f, JdbcTemplate jdbcTemplate, double id, UserDAO userDAO, ResultProcessDAO resultProcessDAO) {
         file=f;
         this.jdbcTemplate=jdbcTemplate;
@@ -56,6 +63,8 @@ public class AnalyzeTheard extends Thread{
             throw new RuntimeException(e);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }finally {
+            notifyObservers();
         }
 
     }
@@ -88,5 +97,22 @@ public class AnalyzeTheard extends Thread{
             result[i] = rdf.readByte();
         }
         return result;
+    }
+
+    @Override
+    public void notifyObservers() {
+        for(Observer observer : observers) {
+            observer.update(this);
+        }
+    }
+
+    @Override
+    public void attach(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void detach(Observer observer) {
+        observers.remove(observer);
     }
 }
