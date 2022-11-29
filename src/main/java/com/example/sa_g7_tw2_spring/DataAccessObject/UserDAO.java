@@ -31,7 +31,13 @@ public class UserDAO implements IUserDAO {
         String sql="SELECT * FROM analysisresult.userinformation WHERE Account = "+"\""+user.getAccount()+"\"";
         System.out.println(user.getAccount());
         List<UserVO> userDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
-            return new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null,null);
+            UserVO userVO = new UserVO.userVOBuilder()
+            .setAccount((String) map.get("Account")) //set Account
+            .setUserName((String)map.get("Username")) //set UserName
+            .setPassword((String)map.get("Password")) //set setPassword
+            .setGender((String) map.get("Gender")) //set setGender
+            .build(); //build
+            return userVO;
         }).collect(Collectors.toList());
 
         if(userDataFromDB.size()<1){
