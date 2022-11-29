@@ -59,11 +59,9 @@ public class CloudComputing {
     public boolean UserLogin(@RequestBody LoginDataVO loginData){
         boolean canlogin=userDAO.canlogin(loginData);
         return canlogin;
-
     }
     @GetMapping("/newuser")
     public boolean NewUser(@RequestBody UserVO user){
-
         return userDAO.update(user);
     }
 

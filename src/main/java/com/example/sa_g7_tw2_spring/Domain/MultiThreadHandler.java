@@ -21,7 +21,6 @@ public class MultiThreadHandler {
     private JdbcTemplate jdbcTemplate;
     public void ExcudeAnalyze(File f, double id, UserDAO userDAO,ResultProcessDAO resultProcessDAO)  {
 
-
         AnalyzeTheard theard = new AnalyzeTheard(f,jdbcTemplate,id,userDAO,resultProcessDAO);
         theard.start();
 

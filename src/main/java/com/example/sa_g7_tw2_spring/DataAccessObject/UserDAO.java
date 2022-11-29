@@ -3,6 +3,7 @@ package com.example.sa_g7_tw2_spring.DataAccessObject;
 import com.example.sa_g7_tw2_spring.ValueObject.LoginDataVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
 import com.example.sa_g7_tw2_spring.ValueObject.UserVO;
+import com.example.sa_g7_tw2_spring.ValueObject.UserVO2;
 import com.example.sa_g7_tw2_spring.utils.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -30,8 +31,20 @@ public class UserDAO implements IUserDAO {
     public boolean update(UserVO user) {
         String sql="SELECT * FROM analysisresult.userinformation WHERE Account = "+"\""+user.getAccount()+"\"";
         System.out.println(user.getAccount());
-        List<UserVO> userDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
-            return new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null,null);
+//        List<UserVO> userDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
+//            return new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null,null);
+//        }).collect(Collectors.toList());
+
+        List<UserVO2> userDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
+
+            UserVO2 userVO2 = new UserVO2.userVO2Builder()
+                    .setAccount((String) map.get("Account")) //set Account
+                    .setUserName((String)map.get("Username")) //set UserName
+                    .setPassword((String)map.get("Password")) //set setPassword
+                    .setGender((String) map.get("Gender")) //set setGender
+                    .build(); //build
+
+            return userVO2;
         }).collect(Collectors.toList());
 
         if(userDataFromDB.size()<1){
