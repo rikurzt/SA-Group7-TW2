@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @Repository
-public class ResultProcessDAO {
+public class ResultProcessDAO implements DataAccessObject{
     @Autowired
     private JdbcTemplate jdbcTemplate ;
     public void saveResult(ResultVO result, JdbcTemplate jdbcTemplate, double id) {
@@ -20,7 +20,7 @@ public class ResultProcessDAO {
     }
 
 
-    public void SoundFileToDB(MultipartFile file, Double userid) throws IOException {
+    public void SoundFileToDB(MultipartFile file, String userid) throws IOException {
         jdbcTemplate.update("INSERT INTO analysisresult.voicefile(content,userID) " +
                 "VALUES (?,?)",file.getBytes(),userid);
 

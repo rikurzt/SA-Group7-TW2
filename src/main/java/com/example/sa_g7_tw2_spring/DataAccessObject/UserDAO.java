@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 
 @Repository
-public class UserDAO{
+public class UserDAO implements DataAccessObject{
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
