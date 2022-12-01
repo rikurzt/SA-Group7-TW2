@@ -1,5 +1,8 @@
 package com.example.sa_g7_tw2_spring.Domain;
 
+import com.example.sa_g7_tw2_spring.data.MDVP;
+import com.example.sa_g7_tw2_spring.data.NullMDVP;
+import com.example.sa_g7_tw2_spring.data.RealMDVP;
 import com.example.sa_g7_tw2_spring.utils.ScriptRunner;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,10 +12,11 @@ import java.util.Arrays;
 
 public class DataProcessing {
     int nonce = 0;
-    public double[] ProcessData(File voiceFile){
+    public MDVP ProcessData(File voiceFile){
 
         File processPythonFile = new File("src/py/data_processing.py");
-        double[] result = ScriptRunner.runScript((BufferedReader br)->{
+
+        MDVP result = ScriptRunner.runScript((BufferedReader br)->{
             try{
 
                 String line, last = null;
@@ -20,13 +24,15 @@ public class DataProcessing {
                     last = line;
                     System.out.println(line);
                 }
-                return Arrays.stream(last.split(" ")).mapToDouble((s)->Double.valueOf(s)).toArray();
+                return new RealMDVP(Arrays.stream(last.split(" ")).mapToDouble((s)->Double.valueOf(s)).toArray());
             }catch (Exception e){
-                throw new RuntimeException(e);
+                return new NullMDVP();
             }
         }, "py",processPythonFile.getAbsolutePath(), voiceFile.getAbsolutePath());
 
         return result;
+
+
     }
 
     public double[] test(File voiceFile){

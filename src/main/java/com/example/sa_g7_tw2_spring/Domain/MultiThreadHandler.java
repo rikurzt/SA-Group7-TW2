@@ -17,15 +17,15 @@ import java.util.Queue;
 public class MultiThreadHandler implements Observer {
     @Resource
     private JdbcTemplate jdbcTemplate;
-    private final AnalyzeTheard inUsed[] = new AnalyzeTheard[8];
-    private final Queue<AnalyzeTheard> queue = new LinkedList<>();
+    private final AnalyzeThread inUsed[] = new AnalyzeThread[8];
+    private final Queue<AnalyzeThread> queue = new LinkedList<>();
 
     public void executeAnalyze(File f, double id, UserDAO userDAO, ResultProcessDAO resultProcessDAO)  {
-        AnalyzeTheard thread = new AnalyzeTheard(f,jdbcTemplate,id,userDAO,resultProcessDAO);
+        AnalyzeThread thread = new AnalyzeThread(f,jdbcTemplate,id,userDAO,resultProcessDAO);
         queue(thread);
     }
 
-    public void queue(AnalyzeTheard thread){
+    public void queue(AnalyzeThread thread){
         synchronized (queue) {
             queue.add(thread);
         }
@@ -44,14 +44,14 @@ public class MultiThreadHandler implements Observer {
                     if(inUsed[j] != null) {
                         continue;
                     }
-                    AnalyzeTheard thread = queue.poll();
+                    AnalyzeThread thread = queue.poll();
                     thread.attach(this);
                     inUsed[j] = thread;
                     thread.start();
                 }
             }else {
                 if (!queue.isEmpty()){
-                    AnalyzeTheard thread = queue.poll();
+                    AnalyzeThread thread = queue.poll();
                     thread.attach(this);
                     inUsed[i] = thread;
                     thread.start();
