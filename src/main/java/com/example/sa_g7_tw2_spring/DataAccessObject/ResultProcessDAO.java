@@ -10,10 +10,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @Repository
-public class ResultProcessDAO implements DataAccessObject{
-    @Autowired
-    private JdbcTemplate jdbcTemplate ;
-    public void saveResult(ResultVO result, JdbcTemplate jdbcTemplate, double id) {
+public class ResultProcessDAO extends DataAccessObject{
+
+
+
+    public void saveResult(ResultVO result, double id) {
 
         jdbcTemplate.update("INSERT INTO analysisresult.analysis(up_date, result, record_len,userID) " +
                 "VALUES (?,?,?,?)",result.getTime(),result.getResult(),result.getLength(),result.getID());

@@ -5,19 +5,18 @@ import com.example.sa_g7_tw2_spring.ValueObject.FindRequestVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ValueObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.text.ParseException;
 import java.util.Collection;
 
 public class SpringRetrunByToday extends SpringEvent{
-    @Autowired
-    private ResultQueryDAO resultQueryDAO;
-    public SpringRetrunByToday(ValueObject vo){
-        super(vo);
+    public SpringRetrunByToday(FindRequestVO vo, JdbcTemplate jdbcTemplate){
+        super(vo,jdbcTemplate);
 
     }
     @Override
     public Collection<ResultVO> excute() throws ParseException {
-        return resultQueryDAO.returnByToday((FindRequestVO) vo);
+        return ((ResultQueryDAO)dao).returnByToday((FindRequestVO) vo);
     }
 }

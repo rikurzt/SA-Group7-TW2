@@ -15,16 +15,12 @@ import java.util.stream.Collectors;
 
 
 @Repository
-public class UserDAO implements DataAccessObject{
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+public class UserDAO extends DataAccessObject{
 
     private Collection<String> resultList(String sql){
         return jdbcTemplate.queryForList(sql).stream().map(map->{
             return new String(map.get("token").toString());
         }).collect(Collectors.toList());
-
     }
     public boolean update(UserVO user) {
         String sql="SELECT * FROM analysisresult.userinformation WHERE Account = "+"\""+user.getAccount()+"\"";

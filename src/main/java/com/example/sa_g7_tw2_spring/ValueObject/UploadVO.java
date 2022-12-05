@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
-public class UploadVO {
+public class UploadVO implements ValueObject{
 
     private final MultipartFile multipartFile;
     private final String id;

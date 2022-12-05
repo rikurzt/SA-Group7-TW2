@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class UserVO {
+public class UserVO implements ValueObject{
     private final String account;
     private final String userName;
     private final String password;

@@ -56,7 +56,7 @@ public class AnalyzeTheard extends Thread implements ObservableSubject {
             recordLength = getWavInfo(file);
             ResultVO resultVO =new ResultVO(fileTime, isParkinson,recordLength,id);
 
-            resultProcessDAO.saveResult(resultVO,jdbcTemplate,id);
+            resultProcessDAO.saveResult(resultVO,id);
             sendNotifycationToFirebase.send(resultVO,jdbcTemplate,userDAO);
 
         } catch (IOException e) {
