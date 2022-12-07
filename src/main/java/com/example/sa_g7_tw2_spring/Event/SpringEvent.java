@@ -1,27 +1,22 @@
 package com.example.sa_g7_tw2_spring.Event;
 
-import com.example.sa_g7_tw2_spring.DataAccessObject.DataAccessObject;
-import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ValueObject;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Collection;
 
 public abstract class SpringEvent<T> {
     ValueObject vo;
     JdbcTemplate jdbcTemplate;
-    DataAccessObject dao;
-    public SpringEvent(ValueObject vo,JdbcTemplate jdbcTemplate){
+
+    public SpringEvent(ValueObject vo){
         this.vo = vo;
-        this.jdbcTemplate=jdbcTemplate;
     }
-    public void setDAO(DataAccessObject dataAccessObject){
-        dao=dataAccessObject;
-        dao.setJdbcTemplate(jdbcTemplate);
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate){
+            this.jdbcTemplate = jdbcTemplate;
 
     }
-    public abstract T excute() throws ParseException, IOException;
+    public abstract T execute() throws ParseException, IOException;
 
 }

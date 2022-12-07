@@ -10,5 +10,6 @@ public class UploadVO implements ValueObject{
 
     private final MultipartFile multipartFile;
     private final String id;
+    private final String token;
 
 }

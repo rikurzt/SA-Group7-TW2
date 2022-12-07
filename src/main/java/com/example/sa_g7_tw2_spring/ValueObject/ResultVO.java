@@ -11,7 +11,7 @@ public class ResultVO implements ValueObject{
     private final LocalDateTime time;
     private final boolean result;
     private final double length;
-    private final double ID;
+    private final String ID;
 
 
     public boolean getResult() {

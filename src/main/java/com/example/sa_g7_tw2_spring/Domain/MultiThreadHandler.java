@@ -2,30 +2,33 @@ package com.example.sa_g7_tw2_spring.Domain;
 
 import com.example.sa_g7_tw2_spring.DataAccessObject.ResultProcessDAO;
 import com.example.sa_g7_tw2_spring.DataAccessObject.UserDAO;
+import com.example.sa_g7_tw2_spring.ValueObject.UploadVO;
 import com.example.sa_g7_tw2_spring.pattern.ObservableSubject;
 import com.example.sa_g7_tw2_spring.pattern.Observer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
 
 
 @Service
 public class MultiThreadHandler implements Observer {
-    @Resource
-    private JdbcTemplate jdbcTemplate;
-    private final AnalyzeTheard inUsed[] = new AnalyzeTheard[8];
-    private final Queue<AnalyzeTheard> queue = new LinkedList<>();
+    @Autowired
+    private DataBaseManager dataBaseManager;
+    private final AnalyzeThread inUsed[] = new AnalyzeThread[8];
+    private final Queue<AnalyzeThread> queue = new LinkedList<>();
 
-    public void executeAnalyze(File f, double id, UserDAO userDAO, ResultProcessDAO resultProcessDAO)  {
-        AnalyzeTheard thread = new AnalyzeTheard(f,jdbcTemplate,id,userDAO,resultProcessDAO);
+    public void executeAnalyze(UploadVO vo) throws IOException {
+        AnalyzeThread thread = new AnalyzeThread(dataBaseManager,vo);
         queue(thread);
     }
 
-    public void queue(AnalyzeTheard thread){
+    public void queue(AnalyzeThread thread){
         synchronized (queue) {
             queue.add(thread);
         }
@@ -35,8 +38,6 @@ public class MultiThreadHandler implements Observer {
     public void update(){
         update(-1);
     }
-
-
     public void update(int i) {
         synchronized (queue) {
             if(i == -1) {
@@ -44,14 +45,14 @@ public class MultiThreadHandler implements Observer {
                     if(inUsed[j] != null) {
                         continue;
                     }
-                    AnalyzeTheard thread = queue.poll();
+                    AnalyzeThread thread = queue.poll();
                     thread.attach(this);
                     inUsed[j] = thread;
                     thread.start();
                 }
             }else {
                 if (!queue.isEmpty()){
-                    AnalyzeTheard thread = queue.poll();
+                    AnalyzeThread thread = queue.poll();
                     thread.attach(this);
                     inUsed[i] = thread;
                     thread.start();
@@ -61,7 +62,6 @@ public class MultiThreadHandler implements Observer {
             }
         }
     }
-
     @Override
     public void update(ObservableSubject subject) {
         for(int i = 0; i < inUsed.length; i++) {

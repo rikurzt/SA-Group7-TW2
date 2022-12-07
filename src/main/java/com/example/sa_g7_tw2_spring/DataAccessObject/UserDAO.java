@@ -14,9 +14,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Repository
-public class UserDAO extends DataAccessObject{
 
+public class UserDAO extends DataAccessObject{
+    private static UserDAO userDAO = new UserDAO();
+    public UserDAO getInstance(){
+        return  userDAO;
+    }
     private Collection<String> resultList(String sql){
         return jdbcTemplate.queryForList(sql).stream().map(map->{
             return new String(map.get("token").toString());

@@ -13,13 +13,13 @@ import java.text.ParseException;
 import java.util.Collection;
 
 public class SpringUserLogin extends SpringEvent{
-
-    public SpringUserLogin(ValueObject vo, JdbcTemplate jdbcTemplate){
-        super(vo,jdbcTemplate);
+    UserDAO userDAO;
+    public SpringUserLogin(ValueObject vo){
+        super(vo);
 
     }
     @Override
-    public Boolean excute() throws ParseException {
-        return ((UserDAO)dao).canlogin((LoginDataVO) vo);
+    public Boolean execute() throws ParseException {
+        return userDAO.canlogin((LoginDataVO) vo);
     }
 }

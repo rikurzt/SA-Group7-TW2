@@ -11,12 +11,15 @@ import java.text.ParseException;
 import java.util.Collection;
 
 public class SpringRetrunByToday extends SpringEvent{
-    public SpringRetrunByToday(FindRequestVO vo, JdbcTemplate jdbcTemplate){
-        super(vo,jdbcTemplate);
+    private ResultQueryDAO resultQueryDAO = new ResultQueryDAO();
+    public SpringRetrunByToday(FindRequestVO vo){
+        super(vo);
 
     }
     @Override
-    public Collection<ResultVO> excute() throws ParseException {
-        return ((ResultQueryDAO)dao).returnByToday((FindRequestVO) vo);
+    public Collection<ResultVO> execute() throws ParseException {
+        resultQueryDAO.getInstance();
+        resultQueryDAO.setJdbcTemplate(jdbcTemplate);
+        return resultQueryDAO.returnByToday((FindRequestVO) vo);
     }
 }

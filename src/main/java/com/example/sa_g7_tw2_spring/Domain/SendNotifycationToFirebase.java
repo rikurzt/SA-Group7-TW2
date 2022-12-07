@@ -17,7 +17,7 @@ public class SendNotifycationToFirebase {
 
 
 
-    public void send(ResultVO result, JdbcTemplate jdbcTemplate,UserDAO userDAO) throws FirebaseMessagingException, ExecutionException, InterruptedException {
+    public void send(ResultVO result, String token) throws FirebaseMessagingException, ExecutionException, InterruptedException {
         AndroidConfig androidConfig =AndroidConfig.builder()
                 .setTtl(Duration.ofMinutes(2).toMillis())
                 .setCollapseKey("topic")
@@ -31,7 +31,7 @@ public class SendNotifycationToFirebase {
                 .setNotification(Notification.builder()
                         .setBody("Analyze is Done")
                         .setTitle("Parkinson Diesase Notification").build())
-                .setToken(userDAO.returnTokenByID(result.getID(),jdbcTemplate))
+                .setToken(token)
                 .build();
 
         FirebaseMessaging.getInstance().sendAsync(m).get();

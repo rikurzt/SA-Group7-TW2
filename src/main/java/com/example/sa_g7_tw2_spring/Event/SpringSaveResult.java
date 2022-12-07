@@ -1,29 +1,26 @@
 package com.example.sa_g7_tw2_spring.Event;
 
 import com.example.sa_g7_tw2_spring.DataAccessObject.ResultProcessDAO;
-import com.example.sa_g7_tw2_spring.Domain.MultiThreadHandler;
+import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
 import com.example.sa_g7_tw2_spring.ValueObject.UploadVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ValueObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.IOException;
 import java.text.ParseException;
 
-public class SpringFileUpload extends SpringEvent{
+public class SpringSaveResult extends SpringEvent{
     ResultProcessDAO resultProcessDAO = new ResultProcessDAO();
-    MultiThreadHandler multiThreadHandler;
-    public SpringFileUpload(ValueObject vo, MultiThreadHandler mth){
+    public SpringSaveResult(ValueObject vo){
         super(vo);
-        multiThreadHandler = mth;
+
     }
     @Override
     public Object execute() throws ParseException, IOException {
-        UploadVO uploadVO =(UploadVO)vo;
+        ResultVO resultVO =(ResultVO)vo;
+        resultProcessDAO.getInstance();
         resultProcessDAO.setJdbcTemplate(jdbcTemplate);
-
-        resultProcessDAO.SoundFileToDB(uploadVO.getMultipartFile(), uploadVO.getId());
-        multiThreadHandler.executeAnalyze(uploadVO);
+        resultProcessDAO.saveResult(resultVO,resultVO.getID());
         return null;
     }
 }

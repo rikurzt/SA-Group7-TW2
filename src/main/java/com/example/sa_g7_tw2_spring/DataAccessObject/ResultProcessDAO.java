@@ -9,12 +9,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-@Repository
+
 public class ResultProcessDAO extends DataAccessObject{
+    private static ResultProcessDAO resultProcessDAO = new ResultProcessDAO();
+    public ResultProcessDAO getInstance(){
+        return  resultProcessDAO;
+    }
 
 
-
-    public void saveResult(ResultVO result, double id) {
+    public void saveResult(ResultVO result, String id) {
 
         jdbcTemplate.update("INSERT INTO analysisresult.analysis(up_date, result, record_len,userID) " +
                 "VALUES (?,?,?,?)",result.getTime(),result.getResult(),result.getLength(),result.getID());
@@ -22,7 +25,7 @@ public class ResultProcessDAO extends DataAccessObject{
 
 
     public void SoundFileToDB(MultipartFile file, String userid) throws IOException {
-        jdbcTemplate.update("INSERT INTO analysisresult.voicefile(content,userID) " +
+        jdbcTemplate.update("INSERT INTO analysisresult.voicefile(vofile,user_ID) " +
                 "VALUES (?,?)",file.getBytes(),userid);
 
     }
