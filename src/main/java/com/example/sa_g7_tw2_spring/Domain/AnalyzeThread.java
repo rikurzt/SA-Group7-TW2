@@ -66,7 +66,7 @@ public class AnalyzeThread extends Thread implements ObservableSubject {
             fileTime= ReadFileLastModifiedTime(file);
             recordLength = getWavInfo(file);
             ResultVO resultVO =new ResultVO(fileTime, isParkinson,recordLength,id);
-            dbmgr.AddCommand(new SpringSaveResult(resultVO));
+            dbmgr.save(resultVO);
 
             sendNotifycationToFirebase.send(resultVO,vo.getToken());
         } catch (Exception e) {

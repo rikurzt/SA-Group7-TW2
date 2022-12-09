@@ -9,7 +9,7 @@ public class SimpleTest {
     public static void main(String[] args) {
         CloudComputing cc = new CloudComputing();
 
-        System.out.println(new DataProcessing().test(new File("test/record20.wav")));
+        System.out.println(new DataProcessing().ProcessData(new File("test/record20.wav")));
 
         int a = 1;
     }
