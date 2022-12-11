@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
-public class WristbandVO implements ValueObject{
+public class WristbandVO extends ValueObject{
     private final String wristbandID;
     private final MultipartFile file;
 }

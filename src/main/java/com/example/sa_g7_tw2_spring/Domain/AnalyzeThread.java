@@ -65,7 +65,11 @@ public class AnalyzeThread extends Thread implements ObservableSubject {
             isParkinson = processResult.analyze(aiRunner);
             fileTime= ReadFileLastModifiedTime(file);
             recordLength = getWavInfo(file);
-            ResultVO resultVO =new ResultVO(fileTime, isParkinson,recordLength,id);
+            ResultVO resultVO = (ResultVO)ValueObjectCache.getValueObject("resultVO");
+            resultVO.setID(id);
+            resultVO.setResult(isParkinson);
+            resultVO.setLength(recordLength);
+            resultVO.setTime(fileTime);
             dbmgr.save(resultVO);
 
             sendNotifycationToFirebase.send(resultVO,vo.getToken());

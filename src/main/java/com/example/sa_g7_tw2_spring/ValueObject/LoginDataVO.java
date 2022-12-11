@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class LoginDataVO implements ValueObject{
+public class LoginDataVO extends ValueObject{
     private final String account;
     private final String password;
 

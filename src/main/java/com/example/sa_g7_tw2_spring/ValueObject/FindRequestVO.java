@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class FindRequestVO implements ValueObject{
+public class FindRequestVO extends ValueObject{
     private final String account;
     private final String token;
     private final String message;

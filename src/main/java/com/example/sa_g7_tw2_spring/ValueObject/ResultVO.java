@@ -7,11 +7,11 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class ResultVO implements ValueObject{
-    private final LocalDateTime time;
-    private final boolean result;
-    private final double length;
-    private final String ID;
+public class ResultVO extends ValueObject{
+    private LocalDateTime time;
+    private boolean result;
+    private double length;
+    private String ID;
 
 
     public boolean getResult() {
