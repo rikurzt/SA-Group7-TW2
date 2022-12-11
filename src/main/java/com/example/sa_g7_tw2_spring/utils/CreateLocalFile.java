@@ -15,7 +15,7 @@ public class CreateLocalFile {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            File voiceFile = new File("src/voice"+ UUID.randomUUID() +".wav");
+            File voiceFile = new File("voicetemp/voice"+ UUID.randomUUID() +".wav");
             if(!voiceFile.exists()){
                 try {
                     voiceFile.createNewFile();

@@ -21,8 +21,8 @@ public class SpringFileUpload extends SpringEvent{
     public Object execute() throws ParseException, IOException {
         UploadVO uploadVO =(UploadVO)vo;
         resultProcessDAO.setJdbcTemplate(jdbcTemplate);
-
-        resultProcessDAO.SoundFileToDB(uploadVO.getMultipartFile(), uploadVO.getId());
+        String anID = resultProcessDAO.GenerateAnID();
+        resultProcessDAO.SoundFileToDB(uploadVO.getMultipartFile(), uploadVO.getId(),anID);
         multiThreadHandler.executeAnalyze(uploadVO);
         return null;
     }

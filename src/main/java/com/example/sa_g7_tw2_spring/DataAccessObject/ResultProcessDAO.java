@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.UUID;
 
 
 public class ResultProcessDAO extends DataAccessObject{
@@ -24,9 +25,12 @@ public class ResultProcessDAO extends DataAccessObject{
     }
 
 
-    public void SoundFileToDB(MultipartFile file, String userid) throws IOException {
-        jdbcTemplate.update("INSERT INTO analysisresult.voicefile(vofile,user_ID) " +
-                "VALUES (?,?)",file.getBytes(),userid);
+    public void SoundFileToDB(MultipartFile file, String userid,String anID) throws IOException {
+        jdbcTemplate.update("INSERT INTO analysisresult.voicefile(vofile,user_ID,An_ID) " +
+                "VALUES (?,?,?)",file.getBytes(),userid,anID);
 
+    }
+    public String GenerateAnID(){
+        return UUID.randomUUID().toString().replace("-", "").toLowerCase();
     }
 }

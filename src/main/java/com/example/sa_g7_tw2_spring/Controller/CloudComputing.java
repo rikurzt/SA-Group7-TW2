@@ -5,7 +5,9 @@ import com.example.sa_g7_tw2_spring.Domain.MultiThreadHandler;
 import com.example.sa_g7_tw2_spring.ValueObject.*;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
@@ -38,8 +40,8 @@ public class CloudComputing {
         return dbMgr.getByDate(findRequestVO);
     }
     @RequestMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void FileUpload(@RequestParam("file") MultipartFile file,@RequestParam("id") String id,@RequestParam("token") String token ) throws IOException, InterruptedException, FirebaseMessagingException, ExecutionException, ParseException {
-        dbMgr.upload(file, id, token, mth);
+    public ResponseEntity<?> FileUpload(@RequestParam("file") MultipartFile file, @RequestParam("id") String id, @RequestParam("token") String token ) throws IOException, InterruptedException, FirebaseMessagingException, ExecutionException, ParseException {
+       return dbMgr.upload(file, id, token, mth);
     }
     @GetMapping("/login")
     public boolean UserLogin(@RequestBody LoginDataVO loginData) throws ParseException, IOException {

@@ -9,6 +9,7 @@ import com.example.sa_g7_tw2_spring.data.MDVP;
 import com.example.sa_g7_tw2_spring.data.RealMDVP;
 import com.example.sa_g7_tw2_spring.pattern.ObservableSubject;
 import com.example.sa_g7_tw2_spring.pattern.Observer;
+import com.example.sa_g7_tw2_spring.utils.CreateLocalFile;
 import org.jaudiotagger.audio.wav.util.WavInfoReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -50,7 +51,7 @@ public class AnalyzeThread extends Thread implements ObservableSubject {
     private DataBaseManager dbmgr;
     //endregion
     public AnalyzeThread(DataBaseManager dataBaseManager, UploadVO vo) throws IOException {
-        file=vo.getMultipartFile().getResource().getFile();
+        file= CreateLocalFile.process(vo.getMultipartFile());
         id=vo.getId();
         dbmgr = dataBaseManager;
         this.vo = vo;
