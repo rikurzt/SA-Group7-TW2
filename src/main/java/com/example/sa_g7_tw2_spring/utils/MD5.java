@@ -3,6 +3,7 @@ package com.example.sa_g7_tw2_spring.utils;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Iterator;
 
 public class MD5 {
     public static String encoding(String pw) {
@@ -14,11 +15,30 @@ public class MD5 {
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
             messageDigest.update(str.getBytes("UTF-8"));
             byte[] bytes = messageDigest.digest();
+
+            ByteStorage storage = new ByteStorage(bytes);
+
             StringBuffer sb = new StringBuffer(bytes.length * 2);
-            for (Byte b : bytes) {
+
+            for (Byte b : storage) {
                 sb.append(hexDigits[(b >> 4) & 0x0f]);
                 sb.append(hexDigits[b & 0x0f]);
             }
+
+            //ByteIterator iterator = new ByteIterator(storage.getBytes());
+
+//            while(iterator.hasNext()){
+//                Byte b = iterator.next();
+//                sb.append(hexDigits[(b >> 4) & 0x0f]);
+//                sb.append(hexDigits[b & 0x0f]);
+//            }
+
+            //ShapeIterator iterator = new ShapeIterator(bytes);
+//            for (Byte b : bytes) {
+//                sb.append(hexDigits[(b >> 4) & 0x0f]);
+//                sb.append(hexDigits[b & 0x0f]);
+//            }
+
             encoded=sb.toString();
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);

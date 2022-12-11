@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,8 +26,34 @@ public class UserDAO extends DataAccessObject{
             return new String(map.get("token").toString());
         }).collect(Collectors.toList());
     }
+    class SqlFlyWeightFactory {
+        private static HashMap<String, SqlFlyWeight> sqlFlyWeightMap = new HashMap<>();
+        public SqlFlyWeight getSqlFlyWeight(String sqlFlyWeightKey) {
+
+            if (sqlFlyWeightMap.containsKey(sqlFlyWeightKey)) {
+                System.out.println("Without create " + sqlFlyWeightKey + " sqlFlyWeight");
+                return sqlFlyWeightMap.get(sqlFlyWeightKey);
+            } else {
+                SqlFlyWeight newSqlFlyWeight = create(sqlFlyWeightKey);
+                sqlFlyWeightMap.put(sqlFlyWeightKey, newSqlFlyWeight);
+                return newSqlFlyWeight;
+            }
+        }
+        public SqlFlyWeight create(String key){
+            switch(key){
+                case "getUserInfoWithAccount" :
+                    return new SqlFlyWeight("SELECT * FROM analysisresult.userinformation WHERE Account = ");
+                case "getUserInfoWithID" :
+                    return new SqlFlyWeight("SELECT * FROM analysisresult.userinformation WHERE ID = ");
+                default : //可选
+                    return null;
+            }
+        }
+    }
     public boolean update(UserVO user) {
-        String sql="SELECT * FROM analysisresult.userinformation WHERE Account = "+"\""+user.getAccount()+"\"";
+        SqlFlyWeight sqlFlyWeight = sqlFlyWeightFactory.getSqlFlyWeight("getUserInfoWithAccount");
+        //String sql="SELECT * FROM analysisresult.userinformation WHERE Account = "+"\""+user.getAccount()+"\"";
+        String sql=sqlFlyWeight.sql+"\""+user.getAccount()+"\"";
         System.out.println(user.getAccount());
         List<UserVO> userDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
             return new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null,null);
