@@ -5,6 +5,8 @@ import com.example.sa_g7_tw2_spring.Domain.MultiThreadHandler;
 import com.example.sa_g7_tw2_spring.ValueObject.UploadVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ValueObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.IOException;
@@ -18,12 +20,18 @@ public class SpringFileUpload extends SpringEvent{
         multiThreadHandler = mth;
     }
     @Override
-    public Object execute() throws ParseException, IOException {
+    public ResponseEntity execute() throws ParseException, IOException {
         UploadVO uploadVO =(UploadVO)vo;
         resultProcessDAO.setJdbcTemplate(jdbcTemplate);
         String anID = resultProcessDAO.GenerateAnID();
-        resultProcessDAO.SoundFileToDB(uploadVO.getMultipartFile(), uploadVO.getId(),anID);
+        try{
+            resultProcessDAO.SoundFileToDB(uploadVO.getMultipartFile(), uploadVO.getId(),anID);
+
+        }catch (Exception e){
+            return new ResponseEntity("uploaded Error!"+e, HttpStatus.BAD_REQUEST);
+
+        }
         multiThreadHandler.executeAnalyze(uploadVO);
-        return null;
+        return new ResponseEntity("Successfully uploaded!", HttpStatus.OK);
     }
 }

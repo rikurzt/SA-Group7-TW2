@@ -15,7 +15,7 @@ public class ValueObjectCache {
         return (ValueObject) cacheVO.clone();
     }
     public static void loadCache(){
-        ResultVO resultVO = new ResultVO(LocalDateTime.parse("2022-01-01 00:00:00"),false,0,null);
+        ResultVO resultVO = new ResultVO(null,false,0,null);
         voMap.put("resultVO",resultVO);
         FindRequestVO findRequestVo = new FindRequestVO(null,null,null);
         voMap.put("findRequestVo",findRequestVo);

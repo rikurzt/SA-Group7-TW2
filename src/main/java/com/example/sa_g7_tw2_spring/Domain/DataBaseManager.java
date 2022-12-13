@@ -49,8 +49,8 @@ public class DataBaseManager {
 
     public ResponseEntity<?> upload(MultipartFile file, String id, String token, MultiThreadHandler mth) throws IOException, InterruptedException, FirebaseMessagingException, ExecutionException, ParseException {
         AddCommand(new SpringFileUpload(new UploadVO(file,id,token),mth));
-        execute();
-        return new ResponseEntity("Successfully uploaded!", HttpStatus.OK);
+        return execute();
+
     }
 
     public boolean login(LoginDataVO loginData) throws ParseException, IOException {

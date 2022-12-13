@@ -15,16 +15,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+@Repository
+public class UserDAO extends DataAccessObject {
+    SqlFlyWeightFactory sqlFlyWeightFactory = new SqlFlyWeightFactory();
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-public class UserDAO extends DataAccessObject{
-    private static UserDAO userDAO = new UserDAO();
-    public UserDAO getInstance(){
-        return  userDAO;
-    }
     private Collection<String> resultList(String sql){
         return jdbcTemplate.queryForList(sql).stream().map(map->{
             return new String(map.get("token").toString());
         }).collect(Collectors.toList());
+    }
+
+    class SqlFlyWeight {
+        String sql;
+        public SqlFlyWeight(String sql) {
+            this.sql = sql;
+        }
     }
     class SqlFlyWeightFactory {
         private static HashMap<String, SqlFlyWeight> sqlFlyWeightMap = new HashMap<>();
@@ -61,7 +68,7 @@ public class UserDAO extends DataAccessObject{
 
         if(userDataFromDB.size()<1){
             jdbcTemplate.update("INSERT INTO analysisresult.userinformation(Account, Password, Username,gender,age,phone,familyID,familyName,familyPhone,token) " +
-                    "VALUES (?,?,?,?,?,?,?,?,?,?)"
+                            "VALUES (?,?,?,?,?,?,?,?,?,?)"
                     ,user.getAccount(), MD5.encoding(user.getPassword()),user.getUserName()
                     ,user.getGender(),user.getAge(),user.getPhone(),user.getFamilyID()
                     ,user.getFamilyName(),user.getFamilyPhone(),user.getToken());
@@ -87,10 +94,10 @@ public class UserDAO extends DataAccessObject{
         List<UserVO> userDataFromDB;
         String pw;
         try {
-             userDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
+            userDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
                 return new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null,null);
             }).collect(Collectors.toList());
-             pw=userDataFromDB.get(0).getPassword();
+            pw=userDataFromDB.get(0).getPassword();
         }catch (Exception e){
             return false;
         }
