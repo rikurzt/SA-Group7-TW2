@@ -62,4 +62,9 @@ public class DataBaseManager {
         AddCommand(new SpringSaveResult(vo));
         execute();
     }
+
+    public boolean newUser(UserVO vo) throws ParseException, IOException {
+        AddCommand(new SpringCreateNewUser(vo));
+        return execute();
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.sa_g7_tw2_spring.DataAccessObject;
 
+import com.example.sa_g7_tw2_spring.Domain.*;
 import com.example.sa_g7_tw2_spring.ValueObject.LoginDataVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
 import com.example.sa_g7_tw2_spring.ValueObject.UserVO;
@@ -17,9 +18,10 @@ import java.util.stream.Collectors;
 
 @Repository
 public class UserDAO extends DataAccessObject {
-    SqlFlyWeightFactory sqlFlyWeightFactory = new SqlFlyWeightFactory();
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private MiddlewareAuth loginAuth = new InputLegalMiddleware().setNext(new UserExistMiddleware().setNext(new PasswordCorrectMiddleware()));
+    private SqlFlyWeightFactory sqlFlyWeightFactory = new SqlFlyWeightFactory();
+
+
 
     private Collection<String> resultList(String sql){
         return jdbcTemplate.queryForList(sql).stream().map(map->{
@@ -90,20 +92,40 @@ public class UserDAO extends DataAccessObject {
 
     public boolean canlogin(LoginDataVO loginData) {
         String sql="SELECT * FROM analysisresult.userinformation WHERE Account = "+"\""+loginData.getAccount()+"\"";
-        System.out.println(sql);
-        List<UserVO> userDataFromDB;
-        String pw;
+        UserVO userDataFromDB;
+        UserVO uservo= (UserVO) ValueObjectCache.getValueObject("userVO");
         try {
             userDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
-                return new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null,null);
-            }).collect(Collectors.toList());
-            pw=userDataFromDB.get(0).getPassword();
+                //uservo = new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null,null);
+                uservo.setAccount((String) map.get("Account"));
+                uservo.setUserName((String)map.get("Username"));
+                uservo.setPassword((String)map.get("Username"));
+                uservo.setToken((String)map.get("Username"));
+                uservo.setAge((Integer) map.get("Username"));
+                uservo.setGender((String)map.get("Username"));
+                uservo.setPhone((String)map.get("Username"));
+                uservo.setFamilyID((String)map.get("Username"));
+                uservo.setFamilyName((String)map.get("Username"));
+                uservo.setFamilyPhone((String)map.get("Username"));
+                return uservo;
+            }).collect(Collectors.toList()).get(0);
         }catch (Exception e){
-            return false;
+            uservo.setAccount(null);
+            uservo.setPassword(null);
+            uservo.setToken(null);
+            uservo.setUserName(null);
+            uservo.setAge(0);
+            uservo.setGender(null);
+            uservo.setPhone(null);
+            uservo.setFamilyID(null);
+            uservo.setFamilyName(null);
+            uservo.setFamilyPhone(null);
         }
-        System.out.println(MD5.encoding(loginData.getPassword())+"  "+pw);
-        boolean canLogin= (MD5.encoding(loginData.getPassword()).equals(pw));
+        boolean canLogin= loginAuth.auth(loginData,uservo);
         return canLogin;
+    }
+    public boolean newUser(UserVO vo){
+        return false;
     }
     /*{
     "account":"test@gmail.com",

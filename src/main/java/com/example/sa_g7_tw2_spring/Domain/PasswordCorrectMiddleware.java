@@ -2,15 +2,13 @@ package com.example.sa_g7_tw2_spring.Domain;
 
 import com.example.sa_g7_tw2_spring.ValueObject.LoginDataVO;
 import com.example.sa_g7_tw2_spring.ValueObject.UserVO;
-import org.springframework.util.ObjectUtils;
+import com.example.sa_g7_tw2_spring.utils.MD5;
 
-public class InputLegalMiddleware extends MiddlewareAuth {
-
-
+public class PasswordCorrectMiddleware extends  MiddlewareAuth{
     @Override
     public boolean auth(LoginDataVO vo, UserVO userVO) {
-        // 模擬驗證輸入不合法
-        if (ObjectUtils.isEmpty(vo.getAccount()) || ObjectUtils.isEmpty(vo.getPassword())) {
+        // 模擬驗證使用者不存在
+        if (MD5.encoding(vo.getPassword())!= userVO.getPassword()) {
             return false;
         }
 

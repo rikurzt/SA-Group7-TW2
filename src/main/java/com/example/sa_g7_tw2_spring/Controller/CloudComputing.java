@@ -49,7 +49,7 @@ public class CloudComputing {
     }
     @GetMapping("/newuser")
     public boolean NewUser(@RequestBody UserVO user){
-        return false;
+        return dbMgr.newUser(user);
     }
 
 }
