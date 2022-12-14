@@ -48,7 +48,7 @@ public class CloudComputing {
         return dbMgr.login(loginData);
     }
     @GetMapping("/newuser")
-    public boolean NewUser(@RequestBody UserVO user){
+    public boolean NewUser(@RequestBody UserVO user) throws ParseException, IOException {
         return dbMgr.newUser(user);
     }
 

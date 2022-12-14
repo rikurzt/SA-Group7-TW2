@@ -25,12 +25,9 @@ public class DataBaseManager {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     private Stack<SpringEvent> eventQueue = new Stack<>();
-    public void AddCommand(SpringEvent event) throws ParseException, IOException {
+    public void AddCommand(SpringEvent event){
         event.setJdbcTemplate(jdbcTemplate);
         eventQueue.add(event);
-        if(!eventQueue.isEmpty()){
-            this.execute();
-        }
 
     }
     public <T> T execute() throws ParseException, IOException {

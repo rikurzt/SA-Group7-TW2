@@ -21,6 +21,12 @@ public class UserDAO extends DataAccessObject {
     private MiddlewareAuth loginAuth = new InputLegalMiddleware().setNext(new UserExistMiddleware().setNext(new PasswordCorrectMiddleware()));
     private SqlFlyWeightFactory sqlFlyWeightFactory = new SqlFlyWeightFactory();
 
+    //region singleton
+    private static UserDAO userDAO = new UserDAO();
+    public UserDAO getInstance(){
+        return  userDAO;
+    }
+    //endregion
 
 
     private Collection<String> resultList(String sql){
@@ -65,7 +71,7 @@ public class UserDAO extends DataAccessObject {
         String sql=sqlFlyWeight.sql+"\""+user.getAccount()+"\"";
         System.out.println(user.getAccount());
         List<UserVO> userDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
-            return new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null,null);
+            return new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null,null,null);
         }).collect(Collectors.toList());
 
         if(userDataFromDB.size()<1){
@@ -91,7 +97,8 @@ public class UserDAO extends DataAccessObject {
     }
 
     public boolean canlogin(LoginDataVO loginData) {
-        String sql="SELECT * FROM analysisresult.userinformation WHERE Account = "+"\""+loginData.getAccount()+"\"";
+        SqlFlyWeight sqlFlyWeight = sqlFlyWeightFactory.getSqlFlyWeight("getUserInfoWithAccount");
+        String sql=sqlFlyWeight.sql+"\""+loginData.getAccount()+"\"";
         UserVO userDataFromDB;
         UserVO uservo= (UserVO) ValueObjectCache.getValueObject("userVO");
         try {
@@ -120,12 +127,43 @@ public class UserDAO extends DataAccessObject {
             uservo.setFamilyID(null);
             uservo.setFamilyName(null);
             uservo.setFamilyPhone(null);
+            userDataFromDB = uservo;
         }
-        boolean canLogin= loginAuth.auth(loginData,uservo);
+        boolean canLogin= loginAuth.auth(loginData,userDataFromDB);
         return canLogin;
     }
-    public boolean newUser(UserVO vo){
-        return false;
+    public boolean newUser(UserVO user){
+        String sql="INSERT INTO analysisresult.user(Email_Account, Name,gender,age,phone,address )"+"VALUES(?,?,?,?,?,?)";
+        //String sql2="UPDATE analysisresult.emergency_contact SET ";
+        String sql3="INSERT INTO analysisresult.account(Email_Account, Password,Token )"+"VALUES(?,?,?)";
+        String sql4="INSERT INTO analysisresult.emergency_contact(Emergency_Contact_Phone,Emergency_Contact_Name,USER_ID )"+"VALUES(?,?,?)";
+        String sql5="INSERT INTO analysisresult.emergency_contact(Emergency_Contact_Phone,Emergency_Contact_Name,EC_ID )"+"VALUES(?,?,?)";
+        try {
+            /*
+            if(jdbcTemplate.queryForList("SELECT COL_LENGTH(Email_Account) FORM analysisresult.user ").get(0)==null){
+                jdbcTemplate.execute("alter table user add column Email_Account varchar(319) null default ");
+            }
+            */
+            /*
+            int userIDinuser =jdbcTemplate.queryForList("SELECT User_ID FROM analysisresult.emergency_contact WHERE User_ID = "+"\""+user.getAccount()+"\"").stream().map(map->{ int a =(Integer) map.get("USER_ID");return a; }).collect(Collectors.toList()).get(0);
+            System.out.println(userIDinuser);
+            boolean userIDinEM =jdbcTemplate.queryForList("SELECT User_ID FROM analysisresult.emergency_contact WHERE User_ID = "+"\""+userIDinuser+"\"").get(0).isEmpty();
+            if (userIDinEM) {
+                jdbcTemplate.update(sql4,null,null,null);
+            }*/
+
+            jdbcTemplate.update(sql3
+                    ,user.getAccount(),MD5.encoding(user.getPassword()),user.getToken());
+            jdbcTemplate.update(sql5,user.getFamilyPhone(),user.getUserName(),user.getFamilyID());
+            jdbcTemplate.update(sql
+                    ,user.getAccount(),user.getUserName()
+                    ,user.getGender(),user.getAge(),user.getPhone(),user.getAddress());
+
+        }catch (Exception e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
     }
     /*{
     "account":"test@gmail.com",

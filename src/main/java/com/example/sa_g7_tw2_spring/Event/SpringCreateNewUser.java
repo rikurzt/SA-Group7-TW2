@@ -7,13 +7,15 @@ import java.io.IOException;
 import java.text.ParseException;
 
 public class SpringCreateNewUser extends SpringEvent {
-    UserDAO userDAO = new UserDAO();
+    private UserDAO userDAO = new UserDAO();
     public SpringCreateNewUser(UserVO vo) {
         super(vo);
     }
 
     @Override
     public Object execute() throws ParseException, IOException {
-        return null;
+        userDAO.getInstance();
+        userDAO.setJdbcTemplate(jdbcTemplate);
+        return userDAO.newUser((UserVO) vo);
     }
 }

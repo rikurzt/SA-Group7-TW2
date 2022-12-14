@@ -23,7 +23,7 @@ public class ValueObjectCache {
         voMap.put("loginDataVO",loginDataVO);
         UploadVO uploadVO = new UploadVO(null,null,null);
         voMap.put("uploadVO",uploadVO);
-        UserVO userVO = new UserVO(null,null,null,null,0,null,null,null,null,null);
+        UserVO userVO = new UserVO(null,null,null,null,0,null,null,null,null,null,null);
         voMap.put("userVO",userVO);
         WristbandVO wristbandVO = new WristbandVO(null,null);
         voMap.put("wristbandVO",wristbandVO);
