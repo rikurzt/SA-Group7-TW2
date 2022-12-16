@@ -1,21 +1,13 @@
 package com.example.sa_g7_tw2_spring.Domain;
 
-import com.example.sa_g7_tw2_spring.DataAccessObject.ResultProcessDAO;
-import com.example.sa_g7_tw2_spring.DataAccessObject.UserDAO;
-import com.example.sa_g7_tw2_spring.Event.SpringSaveResult;
+import com.example.sa_g7_tw2_spring.ValueObject.AnalyzedVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
 import com.example.sa_g7_tw2_spring.ValueObject.UploadVO;
 import com.example.sa_g7_tw2_spring.data.MDVP;
-import com.example.sa_g7_tw2_spring.data.RealMDVP;
 import com.example.sa_g7_tw2_spring.pattern.ObservableSubject;
 import com.example.sa_g7_tw2_spring.pattern.Observer;
 import com.example.sa_g7_tw2_spring.utils.CreateLocalFile;
 import org.jaudiotagger.audio.wav.util.WavInfoReader;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,14 +39,16 @@ public class AnalyzeThread extends Thread implements ObservableSubject {
     private DataProcessing dataProcessing;
     private SendNotifycationToFirebase sendNotifycationToFirebase=new SendNotifycationToFirebase();
     private List<Observer> observers = new ArrayList<>();
-    private UploadVO vo;
+    private AnalyzedVO vo;
     private DataBaseManager dbmgr;
+    private String token;
     //endregion
-    public AnalyzeThread(DataBaseManager dataBaseManager, UploadVO vo) throws IOException {
+    public AnalyzeThread(DataBaseManager dataBaseManager, AnalyzedVO vo) throws IOException {
         file= CreateLocalFile.process(vo.getMultipartFile());
-        id=vo.getId();
+        id=vo.getWristbandName();
         dbmgr = dataBaseManager;
         this.vo = vo;
+        token = vo.getToken();
 
     }
 
@@ -67,12 +61,11 @@ public class AnalyzeThread extends Thread implements ObservableSubject {
             fileTime= ReadFileLastModifiedTime(file);
             recordLength = getWavInfo(file);
             ResultVO resultVO = (ResultVO)ValueObjectCache.getValueObject("resultVO");
-            resultVO.setID(id);
+            resultVO.setWristbandName(id);
             resultVO.setResult(isParkinson);
             resultVO.setLength(recordLength);
             resultVO.setTime(fileTime);
             dbmgr.save(resultVO);
-
             sendNotifycationToFirebase.send(resultVO,vo.getToken());
         } catch (Exception e) {
             throw new RuntimeException(e);

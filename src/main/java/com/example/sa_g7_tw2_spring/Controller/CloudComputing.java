@@ -40,16 +40,16 @@ public class CloudComputing {
         return dbMgr.getByDate(findRequestVO);
     }
     @RequestMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> FileUpload(@RequestParam("file") MultipartFile file, @RequestParam("id") String id, @RequestParam("token") String token ) throws IOException, InterruptedException, FirebaseMessagingException, ExecutionException, ParseException {
-       return dbMgr.upload(file, id, token, mth);
+    public ResponseEntity<?> FileUpload(@RequestParam("file") MultipartFile file, @RequestParam("id") String wristbandName ) throws IOException, InterruptedException, FirebaseMessagingException, ExecutionException, ParseException {
+       return dbMgr.upload(file, wristbandName , mth);
     }
     @GetMapping("/login")
-    public boolean UserLogin(@RequestBody LoginDataVO loginData) throws ParseException, IOException {
+    public ResponseEntity<?> UserLogin(@RequestBody LoginDataVO loginData) throws ParseException, IOException {
         return dbMgr.login(loginData);
     }
     @GetMapping("/newuser")
-    public boolean NewUser(@RequestBody UserVO user) throws ParseException, IOException {
-        return dbMgr.newUser(user);
+    public ResponseEntity<?> NewUser(@RequestBody NewUserVO newUserVO) throws ParseException, IOException {
+        return dbMgr.newUser(newUserVO);
     }
 
 }

@@ -11,8 +11,7 @@ public class ResultVO extends ValueObject{
     private LocalDateTime time;
     private boolean result;
     private double length;
-    private String ID;
-
+    private String wristbandName;
 
     public boolean getResult() {
         return result;

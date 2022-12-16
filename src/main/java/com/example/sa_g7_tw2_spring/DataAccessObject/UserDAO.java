@@ -1,11 +1,11 @@
 package com.example.sa_g7_tw2_spring.DataAccessObject;
 
 import com.example.sa_g7_tw2_spring.Domain.*;
-import com.example.sa_g7_tw2_spring.ValueObject.LoginDataVO;
-import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
-import com.example.sa_g7_tw2_spring.ValueObject.UserVO;
+import com.example.sa_g7_tw2_spring.ValueObject.*;
 import com.example.sa_g7_tw2_spring.utils.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Repository
+
 public class UserDAO extends DataAccessObject {
     private MiddlewareAuth loginAuth = new InputLegalMiddleware().setNext(new UserExistMiddleware().setNext(new PasswordCorrectMiddleware()));
     private SqlFlyWeightFactory sqlFlyWeightFactory = new SqlFlyWeightFactory();
@@ -35,7 +35,7 @@ public class UserDAO extends DataAccessObject {
         }).collect(Collectors.toList());
     }
 
-    class SqlFlyWeight {
+     class SqlFlyWeight {
         String sql;
         public SqlFlyWeight(String sql) {
             this.sql = sql;
@@ -57,14 +57,15 @@ public class UserDAO extends DataAccessObject {
         public SqlFlyWeight create(String key){
             switch(key){
                 case "getUserInfoWithAccount" :
-                    return new SqlFlyWeight("SELECT * FROM analysisresult.userinformation WHERE Account = ");
+                    return new SqlFlyWeight("SELECT * FROM analysisresult.account WHERE Email_Account = ");
                 case "getUserInfoWithID" :
-                    return new SqlFlyWeight("SELECT * FROM analysisresult.userinformation WHERE ID = ");
+                    return new SqlFlyWeight("SELECT * FROM analysisresult.account WHERE ID = ");
                 default : //可选
                     return null;
             }
         }
     }
+    /*
     public boolean update(UserVO user) {
         SqlFlyWeight sqlFlyWeight = sqlFlyWeightFactory.getSqlFlyWeight("getUserInfoWithAccount");
         //String sql="SELECT * FROM analysisresult.userinformation WHERE Account = "+"\""+user.getAccount()+"\"";
@@ -85,10 +86,16 @@ public class UserDAO extends DataAccessObject {
             return false;
         }
 
+     }
+*/
 
-    }
-    public String returnTokenByID(double i,JdbcTemplate jdbcTemplate) {
-        String sql="SELECT * FROM analysisresult.userinformation WHERE ID = "+i;
+
+    public String returnTokenByID(String name) {
+        //先從wristband名字中抓使用者資料庫ID，再用ID找到email，用email關連到token
+        String sql="SELECT a.W_Name,account.Token FROM " +
+                "(SELECT user.User_ID,user.Email_Account,wristband.W_Name " +
+                "FROM user LEFT JOIN wristband on user.User_ID = wristband.User_ID) " +
+                "AS a LEFT JOIN account on a.Email_Account = account.Email_Account WHERE W_Name = "+"\""+name+"\"";
 
         String token=jdbcTemplate.queryForList(sql).stream().map(map->{
             return new String(map.get("token").toString());
@@ -96,48 +103,40 @@ public class UserDAO extends DataAccessObject {
         return token;
     }
 
-    public boolean canlogin(LoginDataVO loginData) {
+    public ResponseEntity canlogin(LoginDataVO loginData) {
         SqlFlyWeight sqlFlyWeight = sqlFlyWeightFactory.getSqlFlyWeight("getUserInfoWithAccount");
         String sql=sqlFlyWeight.sql+"\""+loginData.getAccount()+"\"";
-        UserVO userDataFromDB;
-        UserVO uservo= (UserVO) ValueObjectCache.getValueObject("userVO");
+        System.out.println(sql);
+        AccountVO accountDataFromDB;
+        AccountVO accountVO=(AccountVO) ValueObjectCache.getValueObject("AccountVO");
         try {
-            userDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
+            accountDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
                 //uservo = new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null,null);
-                uservo.setAccount((String) map.get("Account"));
-                uservo.setUserName((String)map.get("Username"));
-                uservo.setPassword((String)map.get("Username"));
-                uservo.setToken((String)map.get("Username"));
-                uservo.setAge((Integer) map.get("Username"));
-                uservo.setGender((String)map.get("Username"));
-                uservo.setPhone((String)map.get("Username"));
-                uservo.setFamilyID((String)map.get("Username"));
-                uservo.setFamilyName((String)map.get("Username"));
-                uservo.setFamilyPhone((String)map.get("Username"));
-                return uservo;
+                accountVO.setAccount((String)map.get("Account"));
+                accountVO.setPassword((String)map.get("Password"));
+                accountVO.setToken((String)map.get("Token") );
+                return accountVO;
             }).collect(Collectors.toList()).get(0);
+            boolean canLogin= loginAuth.auth(loginData,accountDataFromDB);
+            System.out.println(canLogin);
+            if(canLogin){
+                return new ResponseEntity("Login Success", HttpStatus.OK);
+            }else{
+                return new ResponseEntity("Login Error!", HttpStatus.FORBIDDEN);
+            }
+
         }catch (Exception e){
-            uservo.setAccount(null);
-            uservo.setPassword(null);
-            uservo.setToken(null);
-            uservo.setUserName(null);
-            uservo.setAge(0);
-            uservo.setGender(null);
-            uservo.setPhone(null);
-            uservo.setFamilyID(null);
-            uservo.setFamilyName(null);
-            uservo.setFamilyPhone(null);
-            userDataFromDB = uservo;
+            return new ResponseEntity("Login Error!"+e, HttpStatus.FORBIDDEN);
         }
-        boolean canLogin= loginAuth.auth(loginData,userDataFromDB);
-        return canLogin;
+
+
     }
-    public boolean newUser(UserVO user){
+    public ResponseEntity newUser(NewUserVO user){
         String sql="INSERT INTO analysisresult.user(Email_Account, Name,gender,age,phone,address )"+"VALUES(?,?,?,?,?,?)";
-        //String sql2="UPDATE analysisresult.emergency_contact SET ";
         String sql3="INSERT INTO analysisresult.account(Email_Account, Password,Token )"+"VALUES(?,?,?)";
         String sql4="INSERT INTO analysisresult.emergency_contact(Emergency_Contact_Phone,Emergency_Contact_Name,USER_ID )"+"VALUES(?,?,?)";
         String sql5="INSERT INTO analysisresult.emergency_contact(Emergency_Contact_Phone,Emergency_Contact_Name,EC_ID )"+"VALUES(?,?,?)";
+        String sql6="INSERT INTO analysisresult.wristband(Name)"+"VALUES(?)";
         try {
             /*
             if(jdbcTemplate.queryForList("SELECT COL_LENGTH(Email_Account) FORM analysisresult.user ").get(0)==null){
@@ -155,15 +154,16 @@ public class UserDAO extends DataAccessObject {
             jdbcTemplate.update(sql3
                     ,user.getAccount(),MD5.encoding(user.getPassword()),user.getToken());
             jdbcTemplate.update(sql5,user.getFamilyPhone(),user.getUserName(),user.getFamilyID());
+            jdbcTemplate.update(sql6,user.getWristbandName());
             jdbcTemplate.update(sql
                     ,user.getAccount(),user.getUserName()
                     ,user.getGender(),user.getAge(),user.getPhone(),user.getAddress());
 
         }catch (Exception e){
             System.out.println(e);
-            return false;
+            return new ResponseEntity("create error"+e, HttpStatus.BAD_REQUEST);
         }
-        return true;
+        return new ResponseEntity("create Success", HttpStatus.OK);
     }
     /*{
     "account":"test@gmail.com",

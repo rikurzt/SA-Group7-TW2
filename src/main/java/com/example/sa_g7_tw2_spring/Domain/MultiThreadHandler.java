@@ -2,6 +2,7 @@ package com.example.sa_g7_tw2_spring.Domain;
 
 import com.example.sa_g7_tw2_spring.DataAccessObject.ResultProcessDAO;
 import com.example.sa_g7_tw2_spring.DataAccessObject.UserDAO;
+import com.example.sa_g7_tw2_spring.ValueObject.AnalyzedVO;
 import com.example.sa_g7_tw2_spring.ValueObject.UploadVO;
 import com.example.sa_g7_tw2_spring.pattern.ObservableSubject;
 import com.example.sa_g7_tw2_spring.pattern.Observer;
@@ -23,7 +24,7 @@ public class MultiThreadHandler implements Observer {
     private final AnalyzeThread inUsed[] = new AnalyzeThread[8];
     private final Queue<AnalyzeThread> queue = new LinkedList<>();
 
-    public void executeAnalyze(UploadVO vo) throws IOException {
+    public void executeAnalyze(AnalyzedVO vo) throws IOException {
         AnalyzeThread thread = new AnalyzeThread(dataBaseManager,vo);
         queue(thread);
     }

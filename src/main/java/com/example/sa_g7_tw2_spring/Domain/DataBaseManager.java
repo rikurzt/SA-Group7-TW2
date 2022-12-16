@@ -4,7 +4,6 @@ import com.example.sa_g7_tw2_spring.Event.*;
 import com.example.sa_g7_tw2_spring.ValueObject.*;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -44,13 +43,13 @@ public class DataBaseManager {
         return execute();
     }
 
-    public ResponseEntity<?> upload(MultipartFile file, String id, String token, MultiThreadHandler mth) throws IOException, InterruptedException, FirebaseMessagingException, ExecutionException, ParseException {
-        AddCommand(new SpringFileUpload(new UploadVO(file,id,token),mth));
+    public ResponseEntity<?> upload(MultipartFile file, String name, MultiThreadHandler mth) throws IOException, InterruptedException, FirebaseMessagingException, ExecutionException, ParseException {
+        AddCommand(new SpringFileUploadAnalyze(new UploadVO(file,name),mth));
         return execute();
 
     }
 
-    public boolean login(LoginDataVO loginData) throws ParseException, IOException {
+    public ResponseEntity<?> login(LoginDataVO loginData) throws ParseException, IOException {
         AddCommand(new SpringUserLogin(loginData));
         return execute();
     }
@@ -60,7 +59,7 @@ public class DataBaseManager {
         execute();
     }
 
-    public boolean newUser(UserVO vo) throws ParseException, IOException {
+    public ResponseEntity<?> newUser(NewUserVO vo) throws ParseException, IOException {
         AddCommand(new SpringCreateNewUser(vo));
         return execute();
     }

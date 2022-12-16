@@ -3,12 +3,11 @@ package com.example.sa_g7_tw2_spring.ValueObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
-
 @Data
 @AllArgsConstructor
-public class UploadVO extends ValueObject{
+public class AnalyzedVO extends ValueObject{
 
-    private final MultipartFile multipartFile;
-    private final String wristbandName;
-
+    private MultipartFile multipartFile;
+    private String wristbandName;
+    private String token;
 }

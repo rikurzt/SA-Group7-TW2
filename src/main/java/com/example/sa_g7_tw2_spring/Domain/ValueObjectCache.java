@@ -21,12 +21,17 @@ public class ValueObjectCache {
         voMap.put("findRequestVo",findRequestVo);
         LoginDataVO loginDataVO = new LoginDataVO(null,null);
         voMap.put("loginDataVO",loginDataVO);
-        UploadVO uploadVO = new UploadVO(null,null,null);
+        UploadVO uploadVO = new UploadVO(null,null);
         voMap.put("uploadVO",uploadVO);
-        UserVO userVO = new UserVO(null,null,null,null,0,null,null,null,null,null,null);
+        UserVO userVO = new UserVO(null,null,null,0,null,null,null);
         voMap.put("userVO",userVO);
-        WristbandVO wristbandVO = new WristbandVO(null,null);
+        AccountVO accountVO = new AccountVO(null,null,null);
+        voMap.put("AccountVO",accountVO);
+        EmergencyContectVO emergencyContectVO = new EmergencyContectVO(null,null,null);
+        WristbandVO wristbandVO = new WristbandVO(null);
         voMap.put("wristbandVO",wristbandVO);
+        AnalyzedVO analyzedVO = new AnalyzedVO(null,null,null);
+        voMap.put("AnalyzedVO",analyzedVO);
 
 
     }

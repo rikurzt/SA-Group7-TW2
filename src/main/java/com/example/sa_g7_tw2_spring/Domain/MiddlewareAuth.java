@@ -1,5 +1,6 @@
 package com.example.sa_g7_tw2_spring.Domain;
 
+import com.example.sa_g7_tw2_spring.ValueObject.AccountVO;
 import com.example.sa_g7_tw2_spring.ValueObject.LoginDataVO;
 import com.example.sa_g7_tw2_spring.ValueObject.UserVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ValueObject;
@@ -15,7 +16,7 @@ public abstract class MiddlewareAuth {
         this.next = next;
         return this;
     }
-    public boolean auth(LoginDataVO vo, UserVO vo2) {
+    public boolean auth(LoginDataVO vo, AccountVO vo2) {
         if (ObjectUtils.isEmpty(next)) {
             return true;
         }
