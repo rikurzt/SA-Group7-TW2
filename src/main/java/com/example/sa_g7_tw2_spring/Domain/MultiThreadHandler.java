@@ -66,7 +66,7 @@ public class MultiThreadHandler implements Observer {
     @Override
     public void update(ObservableSubject subject) {
         for(int i = 0; i < inUsed.length; i++) {
-            if(inUsed[i].equals(subject)){
+            if(subject.equals(inUsed[i])){
                 update(i);
                 return;
             }
