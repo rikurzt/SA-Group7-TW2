@@ -8,7 +8,6 @@ import org.springframework.util.ObjectUtils;
 
 public abstract class MiddlewareAuth {
     //套chain of responsibility
-    //https://tw511.com/a/01/31630.html
 
     private MiddlewareAuth next;
 

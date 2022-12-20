@@ -20,21 +20,27 @@ public class ResultQueryDAO extends DataAccessObject{
 
     private Collection<ResultVO> resultList(String sql){
         return jdbcTemplate.queryForList(sql).stream().map(map->{
-            return new ResultVO((LocalDateTime) map.get("up_date"),(Boolean)map.get("result"),(Double)map.get("record_len"),(String) map.get("An_ID"));
+            return new ResultVO((LocalDateTime) map.get("up_date"),(Boolean)map.get("result"),(Double)map.get("record_len"),(String) map.get("An_ID"),0);
         }).collect(Collectors.toList());
 
     }
     public Collection<ResultVO> returnByToday(FindRequestVO findRequestVO) {
         LocalDateTime today = LocalDateTime.now();
-        String sql="SELECT up_date, FROM analysis WHERE DATE(up_date) =" +
-                "\""+DateTimeFormatter.ofPattern("yyyy-MM-dd").format(today)+"\""+" WHERE Account = "+"\""+findRequestVO.getAccount()+"\"";
-
+        String sql="SELECT analysisresult.analysis.up_date,analysisresult.analysis.result,analysisresult.analysis.record_len " +
+                "FROM analysisresult.analysis LEFT JOIN analysisresult.user " +
+                "ON analysisresult.analysis.User_ID =analysisresult.user.User_ID WHERE up_date = " +
+                "\""+DateTimeFormatter.ofPattern("yyyy-MM-dd").format(today)+"\" "+
+                " AND Email_Account = "+"\""+findRequestVO.getAccount()+"\"";
         return resultList(sql);
     }
     public Collection<ResultVO> returnBYDate(FindRequestVO findRequestVO) throws ParseException {
-        String sql="SELECT * FROM analysisresult.analysis WHERE DATE(up_date) =" +
-                "\""+new SimpleDateFormat("yyyy-MM-dd").parse(findRequestVO.getMessage()) +"\" "+
-                " WHERE User_ID = "+"\""+findRequestVO.getAccount()+"\"";
+        String sql="SELECT analysisresult.analysis.up_date,analysisresult.analysis.result,analysisresult.analysis.record_len " +
+                "FROM analysisresult.analysis LEFT JOIN analysisresult.user " +
+                "ON analysisresult.analysis.User_ID =analysisresult.user.User_ID WHERE up_date = " +
+                "\""+findRequestVO.getMessage()+"\" "+
+                " AND Email_Account = "+"\""+findRequestVO.getAccount()+"\"";
+        System.out.println(sql);
+        System.out.println(findRequestVO.getMessage());
         return resultList(sql);
     }
 

@@ -41,7 +41,8 @@ public class CloudComputing {
     }
     @RequestMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> FileUpload(@RequestParam("file") MultipartFile file, @RequestParam("id") String wristbandName ) throws IOException, InterruptedException, FirebaseMessagingException, ExecutionException, ParseException {
-       return dbMgr.upload(file, wristbandName , mth);
+        System.out.println("aaa");
+        return dbMgr.upload(file, wristbandName , mth);
     }
     @GetMapping("/login")
     public ResponseEntity<?> UserLogin(@RequestBody LoginDataVO loginData) throws ParseException, IOException {

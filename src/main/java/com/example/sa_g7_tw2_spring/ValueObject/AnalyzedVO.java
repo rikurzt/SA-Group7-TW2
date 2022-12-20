@@ -10,4 +10,5 @@ public class AnalyzedVO extends ValueObject{
     private MultipartFile multipartFile;
     private String wristbandName;
     private String token;
+    private int userID;
 }

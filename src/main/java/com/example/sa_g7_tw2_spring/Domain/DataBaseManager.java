@@ -20,7 +20,6 @@ import java.util.concurrent.ExecutionException;
 @Repository
 public class DataBaseManager {
     //command pattern Invoker
-    //password:123456
     @Autowired
     private JdbcTemplate jdbcTemplate;
     private Stack<SpringEvent> eventQueue = new Stack<>();

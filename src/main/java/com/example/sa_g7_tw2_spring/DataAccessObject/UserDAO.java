@@ -3,16 +3,11 @@ package com.example.sa_g7_tw2_spring.DataAccessObject;
 import com.example.sa_g7_tw2_spring.Domain.*;
 import com.example.sa_g7_tw2_spring.ValueObject.*;
 import com.example.sa_g7_tw2_spring.utils.MD5;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -90,17 +85,29 @@ public class UserDAO extends DataAccessObject {
 */
 
 
-    public String returnTokenByID(String name) {
+    public String returnTokenByWristbandName(String name) {
         //先從wristband名字中抓使用者資料庫ID，再用ID找到email，用email關連到token
-        String sql="SELECT a.W_Name,account.Token FROM " +
-                "(SELECT user.User_ID,user.Email_Account,wristband.W_Name " +
-                "FROM user LEFT JOIN wristband on user.User_ID = wristband.User_ID) " +
-                "AS a LEFT JOIN account on a.Email_Account = account.Email_Account WHERE W_Name = "+"\""+name+"\"";
+        String sql="SELECT a.W_Name,analysisresult.account.Token FROM " +
+                "(SELECT analysisresult.user.User_ID,analysisresult.user.Email_Account,analysisresult.wristband.W_Name " +
+                "FROM analysisresult.user LEFT JOIN analysisresult.wristband on analysisresult.user.User_ID = analysisresult.wristband.User_ID) " +
+                "AS a LEFT JOIN analysisresult.account on a.Email_Account = analysisresult.account.Email_Account WHERE W_Name = "+"\""+name+"\"";
 
         String token=jdbcTemplate.queryForList(sql).stream().map(map->{
             return new String(map.get("token").toString());
         }).collect(Collectors.toList()).get(0);
         return token;
+    }
+    public int returnIDByWristbandName(String name) {
+        //先從wristband名字中抓使用者資料庫ID，再用ID找到email，用email關連到token
+        String sql="SELECT a.W_Name,.a.User_ID FROM " +
+                "(SELECT analysisresult.user.User_ID,analysisresult.user.Email_Account,analysisresult.wristband.W_Name " +
+                "FROM analysisresult.user LEFT JOIN analysisresult.wristband on analysisresult.user.User_ID = analysisresult.wristband.User_ID) " +
+                "AS a LEFT JOIN analysisresult.account on a.Email_Account = analysisresult.account.Email_Account WHERE W_Name = "+"\""+name+"\"";
+
+        int userID=jdbcTemplate.queryForList(sql).stream().map(map->{
+            return new Integer(map.get("User_ID").toString());
+        }).collect(Collectors.toList()).get(0);
+        return userID;
     }
 
     public ResponseEntity canlogin(LoginDataVO loginData) {
@@ -112,13 +119,12 @@ public class UserDAO extends DataAccessObject {
         try {
             accountDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
                 //uservo = new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null,null);
-                accountVO.setAccount((String)map.get("Account"));
+                accountVO.setAccount((String)map.get("Email_Account"));
                 accountVO.setPassword((String)map.get("Password"));
                 accountVO.setToken((String)map.get("Token") );
                 return accountVO;
             }).collect(Collectors.toList()).get(0);
             boolean canLogin= loginAuth.auth(loginData,accountDataFromDB);
-            System.out.println(canLogin);
             if(canLogin){
                 return new ResponseEntity("Login Success", HttpStatus.OK);
             }else{

@@ -11,7 +11,9 @@ public class InputLegalMiddleware extends MiddlewareAuth {
     @Override
     public boolean auth(LoginDataVO vo, AccountVO accountVO) {
         // 模擬驗證輸入不合法
-        if (ObjectUtils.isEmpty(vo.getAccount()) || ObjectUtils.isEmpty(vo.getPassword())) {
+        System.out.println(vo.getAccount()==null || vo.getPassword()==null);
+        if (vo.getAccount()==null || vo.getPassword()==null) {
+
             return false;
         }
 

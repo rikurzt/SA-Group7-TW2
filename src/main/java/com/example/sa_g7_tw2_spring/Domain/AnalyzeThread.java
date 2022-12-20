@@ -42,6 +42,7 @@ public class AnalyzeThread extends Thread implements ObservableSubject {
     private AnalyzedVO vo;
     private DataBaseManager dbmgr;
     private String token;
+    private int userID;
     //endregion
     public AnalyzeThread(DataBaseManager dataBaseManager, AnalyzedVO vo) throws IOException {
         file= CreateLocalFile.process(vo.getMultipartFile());
@@ -65,6 +66,7 @@ public class AnalyzeThread extends Thread implements ObservableSubject {
             resultVO.setResult(isParkinson);
             resultVO.setLength(recordLength);
             resultVO.setTime(fileTime);
+            resultVO.setUser_ID(userID);
             dbmgr.save(resultVO);
             sendNotifycationToFirebase.send(resultVO,vo.getToken());
         } catch (Exception e) {

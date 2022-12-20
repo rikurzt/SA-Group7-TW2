@@ -32,11 +32,13 @@ public class SpringFileUploadAnalyze extends SpringEvent{
         AnalyzedVO analyzedVO;
         try{
             resultProcessDAO.SoundFileToDB(uploadVO.getMultipartFile(), uploadVO.getWristbandName(),anID);
-            String token =userDAO.returnTokenByID(uploadVO.getWristbandName());
+            String token =userDAO.returnTokenByWristbandName(uploadVO.getWristbandName());
+            int id =userDAO.returnIDByWristbandName(uploadVO.getWristbandName());
             analyzedVO = (AnalyzedVO) ValueObjectCache.getValueObject("AnalyzedVO");
             analyzedVO.setMultipartFile(uploadVO.getMultipartFile());
             analyzedVO.setToken(token);
             analyzedVO.setWristbandName(uploadVO.getWristbandName());
+            analyzedVO.setUserID(id);
 
         }catch (Exception e){
             return new ResponseEntity("uploaded Error!"+e, HttpStatus.BAD_REQUEST);
