@@ -15,7 +15,7 @@ public class ValueObjectCache {
         return (ValueObject) cacheVO.clone();
     }
     public static void loadCache(){
-        ResultVO resultVO = new ResultVO(null,false,0,null,0);
+        ResultVO resultVO = new ResultVO(null,false,0,null,0,null);
         voMap.put("resultVO",resultVO);
         FindRequestVO findRequestVo = new FindRequestVO(null,null,null);
         voMap.put("findRequestVo",findRequestVo);
@@ -30,7 +30,7 @@ public class ValueObjectCache {
         EmergencyContectVO emergencyContectVO = new EmergencyContectVO(null,null,null);
         WristbandVO wristbandVO = new WristbandVO(null);
         voMap.put("wristbandVO",wristbandVO);
-        AnalyzedVO analyzedVO = new AnalyzedVO(null,null,null,0);
+        AnalyzedVO analyzedVO = new AnalyzedVO(null,null,null,0,null);
         voMap.put("AnalyzedVO",analyzedVO);
 
 

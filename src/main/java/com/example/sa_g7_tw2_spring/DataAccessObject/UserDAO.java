@@ -99,7 +99,7 @@ public class UserDAO extends DataAccessObject {
     }
     public int returnIDByWristbandName(String name) {
         //先從wristband名字中抓使用者資料庫ID，再用ID找到email，用email關連到token
-        String sql="SELECT a.W_Name,.a.User_ID FROM " +
+        String sql="SELECT a.W_Name,a.User_ID FROM " +
                 "(SELECT analysisresult.user.User_ID,analysisresult.user.Email_Account,analysisresult.wristband.W_Name " +
                 "FROM analysisresult.user LEFT JOIN analysisresult.wristband on analysisresult.user.User_ID = analysisresult.wristband.User_ID) " +
                 "AS a LEFT JOIN analysisresult.account on a.Email_Account = analysisresult.account.Email_Account WHERE W_Name = "+"\""+name+"\"";

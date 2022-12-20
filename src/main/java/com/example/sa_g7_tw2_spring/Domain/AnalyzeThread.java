@@ -50,6 +50,7 @@ public class AnalyzeThread extends Thread implements ObservableSubject {
         dbmgr = dataBaseManager;
         this.vo = vo;
         token = vo.getToken();
+        userID = vo.getUserID();
 
     }
 
@@ -67,6 +68,7 @@ public class AnalyzeThread extends Thread implements ObservableSubject {
             resultVO.setLength(recordLength);
             resultVO.setTime(fileTime);
             resultVO.setUser_ID(userID);
+            resultVO.setAn_ID(vo.getAn_ID());
             dbmgr.save(resultVO);
             sendNotifycationToFirebase.send(resultVO,vo.getToken());
         } catch (Exception e) {

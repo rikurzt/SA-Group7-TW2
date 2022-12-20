@@ -11,4 +11,5 @@ public class AnalyzedVO extends ValueObject{
     private String wristbandName;
     private String token;
     private int userID;
+    private String An_ID;
 }

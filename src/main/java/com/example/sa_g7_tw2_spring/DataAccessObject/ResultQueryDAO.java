@@ -20,7 +20,7 @@ public class ResultQueryDAO extends DataAccessObject{
 
     private Collection<ResultVO> resultList(String sql){
         return jdbcTemplate.queryForList(sql).stream().map(map->{
-            return new ResultVO((LocalDateTime) map.get("up_date"),(Boolean)map.get("result"),(Double)map.get("record_len"),(String) map.get("An_ID"),0);
+            return new ResultVO((LocalDateTime) map.get("up_date"),(Boolean)map.get("result"),(Double)map.get("record_len"),(String) map.get("An_ID"),0,null);
         }).collect(Collectors.toList());
 
     }

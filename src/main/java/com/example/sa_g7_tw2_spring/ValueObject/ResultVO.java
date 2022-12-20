@@ -13,6 +13,7 @@ public class ResultVO extends ValueObject{
     private double length;
     private String wristbandName;
     private int User_ID;
+    private String An_ID;
 
     public boolean getResult() {
         return result;

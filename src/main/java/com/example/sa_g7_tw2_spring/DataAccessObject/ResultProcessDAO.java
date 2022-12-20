@@ -15,10 +15,10 @@ public class ResultProcessDAO extends DataAccessObject{
     }
 
 
-    public void saveResult(ResultVO result, String id) {
+    public void saveResult(ResultVO result) {
 
-        jdbcTemplate.update("INSERT INTO analysisresult.analysis(up_date, result, record_len,user_ID) " +
-                "VALUES (?,?,?,?)",result.getTime(),result.getResult(),result.getLength(),result.getUser_ID());
+        jdbcTemplate.update("INSERT INTO analysisresult.analysis(up_date, result, record_len,user_ID,An_ID) " +
+                "VALUES (?,?,?,?,?)",result.getTime(),result.getResult(),result.getLength(),result.getUser_ID(),result.getAn_ID());
     }
 
 

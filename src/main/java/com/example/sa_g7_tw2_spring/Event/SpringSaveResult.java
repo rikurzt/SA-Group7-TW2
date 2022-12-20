@@ -18,7 +18,7 @@ public class SpringSaveResult extends SpringEvent{
         ResultVO resultVO =(ResultVO)vo;
         resultProcessDAO.getInstance();
         resultProcessDAO.setJdbcTemplate(jdbcTemplate);
-        resultProcessDAO.saveResult(resultVO,resultVO.getWristbandName());
+        resultProcessDAO.saveResult(resultVO);
         return null;
     }
 }

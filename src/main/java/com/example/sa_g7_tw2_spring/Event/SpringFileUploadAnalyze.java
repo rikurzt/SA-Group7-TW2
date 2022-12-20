@@ -39,6 +39,7 @@ public class SpringFileUploadAnalyze extends SpringEvent{
             analyzedVO.setToken(token);
             analyzedVO.setWristbandName(uploadVO.getWristbandName());
             analyzedVO.setUserID(id);
+            analyzedVO.setAn_ID(anID);
 
         }catch (Exception e){
             return new ResponseEntity("uploaded Error!"+e, HttpStatus.BAD_REQUEST);
