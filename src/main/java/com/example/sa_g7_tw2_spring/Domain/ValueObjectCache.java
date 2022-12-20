@@ -17,7 +17,7 @@ public class ValueObjectCache {
     public static void loadCache(){
         ResultVO resultVO = new ResultVO(null,false,0,null,0,null);
         voMap.put("resultVO",resultVO);
-        FindRequestVO findRequestVo = new FindRequestVO(null,null,null);
+        FindRequestVO findRequestVo = new FindRequestVO(null,null);
         voMap.put("findRequestVo",findRequestVo);
         LoginDataVO loginDataVO = new LoginDataVO(null,null);
         voMap.put("loginDataVO",loginDataVO);
@@ -32,6 +32,8 @@ public class ValueObjectCache {
         voMap.put("wristbandVO",wristbandVO);
         AnalyzedVO analyzedVO = new AnalyzedVO(null,null,null,0,null);
         voMap.put("AnalyzedVO",analyzedVO);
+        SendFindRequestResultVO sendFindRequestResultVO = new SendFindRequestResultVO(null,false);
+        voMap.put("SendFindRequestResultVO",sendFindRequestResultVO);
 
 
     }

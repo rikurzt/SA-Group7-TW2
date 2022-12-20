@@ -28,16 +28,21 @@ public class CloudComputing {
     private DataBaseManager dbMgr ;
     @GetMapping("/Test")
     public boolean testConnect() {
+        System.out.println("aaaaa");
         return  true;
     }
 
     @GetMapping("/findByToday")
-    public Collection<ResultVO> returnByToday(@RequestBody FindRequestVO findRequestVO) throws ParseException, IOException {
+    public Collection<SendFindRequestResultVO> returnByToday(@RequestBody FindRequestVO findRequestVO) throws ParseException, IOException {
         return dbMgr.getToday(findRequestVO);
     }
     @GetMapping("/findByDate")
-    public Collection<ResultVO>returnByDate(@RequestBody FindRequestVO findRequestVO) throws ParseException, IOException {
+    public Collection<SendFindRequestResultVO>returnByDate(@RequestBody FindRequestVO findRequestVO) throws ParseException, IOException {
         return dbMgr.getByDate(findRequestVO);
+    }
+    @GetMapping("/findAll")
+    public Collection<SendFindRequestResultVO> returnAll(@RequestBody FindRequestVO findRequestVO) throws ParseException, IOException {
+        return dbMgr.returnAll(findRequestVO);
     }
     @RequestMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> FileUpload(@RequestParam("file") MultipartFile file, @RequestParam("id") String wristbandName ) throws IOException, InterruptedException, FirebaseMessagingException, ExecutionException, ParseException {

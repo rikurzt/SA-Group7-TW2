@@ -3,6 +3,7 @@ package com.example.sa_g7_tw2_spring.Event;
 import com.example.sa_g7_tw2_spring.DataAccessObject.ResultQueryDAO;
 import com.example.sa_g7_tw2_spring.ValueObject.FindRequestVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
+import com.example.sa_g7_tw2_spring.ValueObject.SendFindRequestResultVO;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.text.ParseException;
@@ -17,7 +18,7 @@ public class SpringRetrunByDate extends SpringEvent{
 
     }
     @Override
-    public Collection<ResultVO> execute() throws ParseException {
+    public Collection<SendFindRequestResultVO> execute() throws ParseException {
         resultQueryDAO.getInstance();
         resultQueryDAO.setJdbcTemplate(jdbcTemplate);
         return resultQueryDAO.returnBYDate((FindRequestVO) vo);

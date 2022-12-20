@@ -118,7 +118,6 @@ public class UserDAO extends DataAccessObject {
         AccountVO accountVO=(AccountVO) ValueObjectCache.getValueObject("AccountVO");
         try {
             accountDataFromDB=jdbcTemplate.queryForList(sql).stream().map(map->{
-                //uservo = new UserVO((String) map.get("Account"),(String)map.get("Username"),(String)map.get("Password"),(String) map.get("Gender"),0,null,null,null,null,null);
                 accountVO.setAccount((String)map.get("Email_Account"));
                 accountVO.setPassword((String)map.get("Password"));
                 accountVO.setToken((String)map.get("Token") );

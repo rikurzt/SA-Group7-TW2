@@ -32,12 +32,12 @@ public class DataBaseManager {
           return (T) eventQueue.pop().execute();
     }
 
-    public Collection<ResultVO> getToday(FindRequestVO findRequestVO) throws ParseException, IOException {
+    public Collection<SendFindRequestResultVO> getToday(FindRequestVO findRequestVO) throws ParseException, IOException {
         AddCommand(new SpringRetrunByToday(findRequestVO));
         return execute();
     }
 
-    public Collection<ResultVO> getByDate(FindRequestVO findRequestVO ) throws ParseException, IOException {
+    public Collection<SendFindRequestResultVO> getByDate(FindRequestVO findRequestVO ) throws ParseException, IOException {
         AddCommand(new SpringRetrunByDate(findRequestVO));
         return execute();
     }
@@ -60,6 +60,11 @@ public class DataBaseManager {
 
     public ResponseEntity<?> newUser(NewUserVO vo) throws ParseException, IOException {
         AddCommand(new SpringCreateNewUser(vo));
+        return execute();
+    }
+
+    public Collection<SendFindRequestResultVO> returnAll(FindRequestVO vo) throws ParseException, IOException {
+        AddCommand(new SpringReturnAll(vo));
         return execute();
     }
 }

@@ -25,20 +25,6 @@ public class MD5 {
                 sb.append(hexDigits[b & 0x0f]);
             }
 
-            //ByteIterator iterator = new ByteIterator(storage.getBytes());
-
-//            while(iterator.hasNext()){
-//                Byte b = iterator.next();
-//                sb.append(hexDigits[(b >> 4) & 0x0f]);
-//                sb.append(hexDigits[b & 0x0f]);
-//            }
-
-            //ShapeIterator iterator = new ShapeIterator(bytes);
-//            for (Byte b : bytes) {
-//                sb.append(hexDigits[(b >> 4) & 0x0f]);
-//                sb.append(hexDigits[b & 0x0f]);
-//            }
-
             encoded=sb.toString();
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
