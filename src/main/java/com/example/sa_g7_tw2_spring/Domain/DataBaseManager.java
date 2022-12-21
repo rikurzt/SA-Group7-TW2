@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Stack;
 import java.util.concurrent.ExecutionException;
@@ -26,10 +28,18 @@ public class DataBaseManager {
     public void AddCommand(SpringEvent event){
         event.setJdbcTemplate(jdbcTemplate);
         eventQueue.add(event);
-
     }
     public <T> T execute() throws ParseException, IOException {
-          return (T) eventQueue.pop().execute();
+        LocalDateTime today = LocalDateTime.now();
+        SpringEvent event =eventQueue.pop();
+        System.out.println("["+DateTimeFormatter.ofPattern("yyyy-MM-dd HH:MM:ss").format(today)+"]"+event.getClass().getName()+" executed");
+        try {
+            return (T)event.execute();
+        }catch (Exception e){
+            System.out.println("["+DateTimeFormatter.ofPattern("yyyy-MM-dd HH:MM:ss").format(today)+"]"+event.getClass().getName()+" unexecuted"+"\n"+e);
+            return null;
+        }
+
     }
 
     public Collection<SendFindRequestResultVO> getToday(FindRequestVO findRequestVO) throws ParseException, IOException {

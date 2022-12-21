@@ -21,17 +21,15 @@ import java.util.concurrent.ExecutionException;
 public class CloudComputing {
 
     //做Command pattern的reciver 將DAO分出去
-
     @Autowired
     private MultiThreadHandler mth;
     @Autowired
     private DataBaseManager dbMgr ;
     @GetMapping("/Test")
     public boolean testConnect() {
-        System.out.println("aaaaa");
+        System.out.println("testConnect");
         return  true;
     }
-
     @GetMapping("/findByToday")
     public Collection<SendFindRequestResultVO> returnByToday(@RequestBody FindRequestVO findRequestVO) throws ParseException, IOException {
         return dbMgr.getToday(findRequestVO);
@@ -46,7 +44,6 @@ public class CloudComputing {
     }
     @RequestMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> FileUpload(@RequestParam("file") MultipartFile file, @RequestParam("id") String wristbandName ) throws IOException, InterruptedException, FirebaseMessagingException, ExecutionException, ParseException {
-        System.out.println("aaa");
         return dbMgr.upload(file, wristbandName , mth);
     }
     @GetMapping("/login")

@@ -34,7 +34,5 @@ public class ValueObjectCache {
         voMap.put("AnalyzedVO",analyzedVO);
         SendFindRequestResultVO sendFindRequestResultVO = new SendFindRequestResultVO(null,false);
         voMap.put("SendFindRequestResultVO",sendFindRequestResultVO);
-
-
     }
 }

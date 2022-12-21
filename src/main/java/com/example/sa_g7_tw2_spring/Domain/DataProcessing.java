@@ -27,7 +27,7 @@ public class DataProcessing {
             }catch (Exception e){
                 return new NullMDVP();
             }
-        }, "py",processPythonFile.getAbsolutePath(), voiceFile.getAbsolutePath());
+        }, "python",processPythonFile.getAbsolutePath(), voiceFile.getAbsolutePath());
 
         return result;
     }

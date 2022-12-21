@@ -13,11 +13,15 @@ public class AIRunner {
         File processPythonFile = new File("src/py/ai.py");
         boolean result = ScriptRunner.runScript((BufferedReader br) -> {
             List<String> lines = br.lines().toList();
+            for (String line:lines
+                 ) {
+                System.out.println(line);
+            }
             try {
                 return Boolean.valueOf(lines.get(lines.size() - 1));
             } catch (Exception e) { }
             return true;
-        },"py",processPythonFile.getAbsolutePath(), String.join(" ", Arrays.stream(data).mapToObj(d->String.valueOf(d)).collect(Collectors.toList())));
+        },"python",processPythonFile.getAbsolutePath(), String.join(" ", Arrays.stream(data).mapToObj(d->String.valueOf(d)).collect(Collectors.toList())));
         return result;
     }
 }

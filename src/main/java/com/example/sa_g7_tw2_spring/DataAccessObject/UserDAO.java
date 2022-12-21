@@ -13,7 +13,9 @@ import java.util.stream.Collectors;
 
 
 public class UserDAO extends DataAccessObject {
-    private MiddlewareAuth loginAuth = new InputLegalMiddleware().setNext(new UserExistMiddleware().setNext(new PasswordCorrectMiddleware()));
+    private MiddlewareAuth loginAuth = new InputLegalMiddleware().
+            setNext(new UserExistMiddleware().
+                    setNext(new PasswordCorrectMiddleware()));
     private SqlFlyWeightFactory sqlFlyWeightFactory = new SqlFlyWeightFactory();
 
     //region singleton

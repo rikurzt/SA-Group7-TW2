@@ -10,7 +10,6 @@ public abstract class MiddlewareAuth {
     //套chain of responsibility
 
     private MiddlewareAuth next;
-
     public MiddlewareAuth setNext(MiddlewareAuth next) {
         this.next = next;
         return this;

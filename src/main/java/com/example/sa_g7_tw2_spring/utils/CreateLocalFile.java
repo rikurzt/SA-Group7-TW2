@@ -36,6 +36,6 @@ public class CreateLocalFile {
                         fos.close();
                 } catch (IOException e) { }
             }
-            return voiceFile;
+            return voiceFile.getAbsoluteFile();
     }
 }
