@@ -20,9 +20,6 @@ public class UserDAO extends DataAccessObject {
     private MiddlewareAuth loginAuth = new InputLegalMiddleware().
             setNext(new UserExistMiddleware().
                     setNext(new PasswordCorrectMiddleware()));
-    private SqlFlyWeightFactory sqlFlyWeightFactory = SqlFlyWeightFactory.getInstance() ;
-
-
     //region singleton
     private static UserDAO userDAO = new UserDAO();
     public static UserDAO getInstance(){

@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public class ResultQueryDAO extends DataAccessObject{
 
     private static ResultQueryDAO resultQueryDAO = new ResultQueryDAO();
-    private SqlFlyWeightFactory sqlFlyWeightFactory =SqlFlyWeightFactory.getInstance();
     public static ResultQueryDAO getInstance(){
         return  resultQueryDAO;
     }
