@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class ResultProcessDAO extends DataAccessObject{
 
-    private SqlFlyWeightFactory sqlFlyWeightFactory =SqlFlyWeightFactory.getInstance();
+
     private static ResultProcessDAO resultProcessDAO = new ResultProcessDAO();
     public static ResultProcessDAO getInstance(){
         return  resultProcessDAO;
