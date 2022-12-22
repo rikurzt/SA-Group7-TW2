@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.text.ParseException;
 
 public class SpringSaveResult extends SpringEvent{
-    ResultProcessDAO resultProcessDAO = new ResultProcessDAO();
+    ResultProcessDAO resultProcessDAO ;
     public SpringSaveResult(ValueObject vo){
         super(vo);
 
@@ -16,7 +16,7 @@ public class SpringSaveResult extends SpringEvent{
     @Override
     public Object execute() throws ParseException, IOException {
         ResultVO resultVO =(ResultVO)vo;
-        resultProcessDAO.getInstance();
+        resultProcessDAO = ResultProcessDAO.getInstance();
         resultProcessDAO.setJdbcTemplate(jdbcTemplate);
         resultProcessDAO.saveResult(resultVO);
         return null;

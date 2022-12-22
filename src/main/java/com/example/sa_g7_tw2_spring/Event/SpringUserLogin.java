@@ -14,14 +14,14 @@ import java.text.ParseException;
 import java.util.Collection;
 
 public class SpringUserLogin extends SpringEvent{
-    UserDAO userDAO=new UserDAO();
+    UserDAO userDAO;
     public SpringUserLogin(ValueObject vo){
         super(vo);
 
     }
     @Override
     public ResponseEntity execute() throws ParseException {
-        userDAO.getInstance();
+        userDAO = UserDAO.getInstance();
         userDAO.setJdbcTemplate(jdbcTemplate);
         return userDAO.canlogin((LoginDataVO) vo);
     }

@@ -8,14 +8,14 @@ import java.text.ParseException;
 
 public class SpringReturnAll extends SpringEvent {
 
-    private ResultQueryDAO resultQueryDAO = new ResultQueryDAO();
+    private ResultQueryDAO resultQueryDAO;
     public SpringReturnAll(FindRequestVO vo) {
         super(vo);
     }
 
     @Override
     public Object execute() throws ParseException, IOException {
-        resultQueryDAO.getInstance();
+        resultQueryDAO=ResultQueryDAO.getInstance();
         resultQueryDAO.setJdbcTemplate(jdbcTemplate);
         return resultQueryDAO.returnByAll((FindRequestVO) vo);
     }

@@ -9,14 +9,14 @@ import java.io.IOException;
 import java.text.ParseException;
 
 public class SpringCreateNewUser extends SpringEvent {
-    private UserDAO userDAO = new UserDAO();
+    private UserDAO userDAO ;
     public SpringCreateNewUser(NewUserVO vo) {
         super(vo);
     }
 
     @Override
     public ResponseEntity execute() throws ParseException, IOException {
-        userDAO.getInstance();
+        userDAO=UserDAO.getInstance();
         userDAO.setJdbcTemplate(jdbcTemplate);
         return userDAO.newUser((NewUserVO) vo);
     }

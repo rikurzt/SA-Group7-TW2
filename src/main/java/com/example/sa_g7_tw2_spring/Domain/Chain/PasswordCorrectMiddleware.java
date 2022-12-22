@@ -1,9 +1,8 @@
-package com.example.sa_g7_tw2_spring.Domain;
+package com.example.sa_g7_tw2_spring.Domain.Chain;
 
 import com.example.sa_g7_tw2_spring.ValueObject.AccountVO;
 import com.example.sa_g7_tw2_spring.ValueObject.LoginDataVO;
-import com.example.sa_g7_tw2_spring.ValueObject.UserVO;
-import com.example.sa_g7_tw2_spring.utils.MD5;
+import com.example.sa_g7_tw2_spring.utils.Iterator.MD5;
 
 public class PasswordCorrectMiddleware extends  MiddlewareAuth{
     @Override

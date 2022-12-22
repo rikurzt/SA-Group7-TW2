@@ -1,4 +1,4 @@
-package com.example.sa_g7_tw2_spring.Domain;
+package com.example.sa_g7_tw2_spring.Domain.Prototype;
 
 import com.example.sa_g7_tw2_spring.ValueObject.*;
 

@@ -1,7 +1,4 @@
-package com.example.sa_g7_tw2_spring.utils;
-
-import java.util.Iterator;
-import java.util.function.Consumer;
+package com.example.sa_g7_tw2_spring.utils.Iterator;
 
 public class ByteStorage implements Iterable<Byte>{
 

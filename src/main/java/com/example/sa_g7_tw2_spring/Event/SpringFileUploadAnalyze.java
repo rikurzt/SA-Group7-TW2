@@ -2,8 +2,8 @@ package com.example.sa_g7_tw2_spring.Event;
 
 import com.example.sa_g7_tw2_spring.DataAccessObject.ResultProcessDAO;
 import com.example.sa_g7_tw2_spring.DataAccessObject.UserDAO;
-import com.example.sa_g7_tw2_spring.Domain.MultiThreadHandler;
-import com.example.sa_g7_tw2_spring.Domain.ValueObjectCache;
+import com.example.sa_g7_tw2_spring.Domain.Observer.MultiThreadHandler;
+import com.example.sa_g7_tw2_spring.Domain.Prototype.ValueObjectCache;
 import com.example.sa_g7_tw2_spring.ValueObject.AnalyzedVO;
 import com.example.sa_g7_tw2_spring.ValueObject.UploadVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ValueObject;
@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.text.ParseException;
 
 public class SpringFileUploadAnalyze extends SpringEvent{
-    ResultProcessDAO resultProcessDAO = new ResultProcessDAO();
-    UserDAO userDAO = new UserDAO();
+    ResultProcessDAO resultProcessDAO ;
+    UserDAO userDAO;
     MultiThreadHandler multiThreadHandler;
     public SpringFileUploadAnalyze(ValueObject vo, MultiThreadHandler mth){
         super(vo);
@@ -24,9 +24,9 @@ public class SpringFileUploadAnalyze extends SpringEvent{
     @Override
     public ResponseEntity execute() throws ParseException, IOException {
         UploadVO uploadVO =(UploadVO)vo;
-        resultProcessDAO.getInstance();
+        resultProcessDAO=ResultProcessDAO.getInstance();
         resultProcessDAO.setJdbcTemplate(jdbcTemplate);
-        userDAO.getInstance();
+        userDAO=UserDAO.getInstance();
         userDAO.setJdbcTemplate(jdbcTemplate);
         String anID = resultProcessDAO.GenerateAnID();
         AnalyzedVO analyzedVO;

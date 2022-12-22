@@ -1,8 +1,7 @@
-package com.example.sa_g7_tw2_spring.Domain;
+package com.example.sa_g7_tw2_spring.Domain.Chain;
 
 import com.example.sa_g7_tw2_spring.ValueObject.AccountVO;
 import com.example.sa_g7_tw2_spring.ValueObject.LoginDataVO;
-import com.example.sa_g7_tw2_spring.ValueObject.UserVO;
 
 public class UserExistMiddleware extends MiddlewareAuth {
 

@@ -1,11 +1,11 @@
-package com.example.sa_g7_tw2_spring.Domain;
+package com.example.sa_g7_tw2_spring.Domain.Observer;
 
+import com.example.sa_g7_tw2_spring.Domain.*;
+import com.example.sa_g7_tw2_spring.Domain.Command_and_Facade.DataBaseManager;
+import com.example.sa_g7_tw2_spring.Domain.Prototype.ValueObjectCache;
 import com.example.sa_g7_tw2_spring.ValueObject.AnalyzedVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
-import com.example.sa_g7_tw2_spring.ValueObject.UploadVO;
 import com.example.sa_g7_tw2_spring.data.MDVP;
-import com.example.sa_g7_tw2_spring.pattern.ObservableSubject;
-import com.example.sa_g7_tw2_spring.pattern.Observer;
 import com.example.sa_g7_tw2_spring.utils.CreateLocalFile;
 import org.jaudiotagger.audio.wav.util.WavInfoReader;
 
@@ -62,7 +62,7 @@ public class AnalyzeThread extends Thread implements ObservableSubject {
             isParkinson = processResult.analyze(aiRunner);
             fileTime= ReadFileLastModifiedTime(file);
             recordLength = getWavInfo(file);
-            ResultVO resultVO = (ResultVO)ValueObjectCache.getValueObject("resultVO");
+            ResultVO resultVO = (ResultVO) ValueObjectCache.getValueObject("resultVO");
             resultVO.setWristbandName(id);
             resultVO.setResult(isParkinson);
             resultVO.setLength(recordLength);

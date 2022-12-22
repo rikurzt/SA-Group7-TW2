@@ -1,11 +1,10 @@
 package com.example.sa_g7_tw2_spring.Controller;
 
-import com.example.sa_g7_tw2_spring.Domain.DataBaseManager;
-import com.example.sa_g7_tw2_spring.Domain.MultiThreadHandler;
+import com.example.sa_g7_tw2_spring.Domain.Command_and_Facade.DataBaseManager;
+import com.example.sa_g7_tw2_spring.Domain.Observer.MultiThreadHandler;
 import com.example.sa_g7_tw2_spring.ValueObject.*;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
