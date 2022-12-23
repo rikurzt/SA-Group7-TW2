@@ -19,5 +19,4 @@ public class NewUserVO extends ValueObject{
     private final String token;
     private final String wristbandName;
 
-
 }

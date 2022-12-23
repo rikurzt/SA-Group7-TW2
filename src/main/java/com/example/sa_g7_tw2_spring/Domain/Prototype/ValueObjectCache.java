@@ -18,7 +18,7 @@ public class ValueObjectCache {
         ResultVO resultVO = new ResultVO(null,false,0,null,0,null);
         voMap.put("resultVO",resultVO);
         FindRequestVO findRequestVo = new FindRequestVO(null,null);
-        voMap.put("findRequestVo",findRequestVo);
+        voMap.put("findRequestVO",findRequestVo);
         LoginDataVO loginDataVO = new LoginDataVO(null,null);
         voMap.put("loginDataVO",loginDataVO);
         UploadVO uploadVO = new UploadVO(null,null);

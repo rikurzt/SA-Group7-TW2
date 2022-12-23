@@ -5,7 +5,7 @@ import com.example.sa_g7_tw2_spring.Domain.Command_and_Facade.DataBaseManager;
 import com.example.sa_g7_tw2_spring.Domain.Prototype.ValueObjectCache;
 import com.example.sa_g7_tw2_spring.ValueObject.AnalyzedVO;
 import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
-import com.example.sa_g7_tw2_spring.data.MDVP;
+import com.example.sa_g7_tw2_spring.data.NullObject.MDVP;
 import com.example.sa_g7_tw2_spring.utils.CreateLocalFile;
 import org.jaudiotagger.audio.wav.util.WavInfoReader;
 
@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
 public class AnalyzeThread extends Thread implements ObservableSubject {
@@ -32,16 +33,17 @@ public class AnalyzeThread extends Thread implements ObservableSubject {
     private double recordLength;
     private String id;
 
+
     //endregion
 
     //region class
+    private ResultVO resultVO;
     private AIRunner aiRunner;
     private DataProcessing dataProcessing;
-    private SendNotifycationToFirebase sendNotifycationToFirebase=new SendNotifycationToFirebase();
     private List<Observer> observers = new ArrayList<>();
     private AnalyzedVO vo;
     private DataBaseManager dbmgr;
-    private String token;
+    public String token;
     private int userID;
     //endregion
     public AnalyzeThread(DataBaseManager dataBaseManager, AnalyzedVO vo) throws IOException {
@@ -62,7 +64,7 @@ public class AnalyzeThread extends Thread implements ObservableSubject {
             isParkinson = processResult.analyze(aiRunner);
             fileTime= ReadFileLastModifiedTime(file);
             recordLength = getWavInfo(file);
-            ResultVO resultVO = (ResultVO) ValueObjectCache.getValueObject("resultVO");
+            resultVO = (ResultVO) ValueObjectCache.getValueObject("resultVO");
             resultVO.setWristbandName(id);
             resultVO.setResult(isParkinson);
             resultVO.setLength(recordLength);
@@ -70,11 +72,16 @@ public class AnalyzeThread extends Thread implements ObservableSubject {
             resultVO.setUser_ID(userID);
             resultVO.setAn_ID(vo.getAn_ID());
             dbmgr.save(resultVO);
-            sendNotifycationToFirebase.send(resultVO,vo.getToken());
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            notifyObservers();
+            try {
+                notifyObservers();
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
@@ -110,7 +117,7 @@ public class AnalyzeThread extends Thread implements ObservableSubject {
     }
 
     @Override
-    public void notifyObservers() {
+    public void notifyObservers() throws ExecutionException, InterruptedException {
         for(Observer observer : observers) {
             observer.update(this);
         }

@@ -37,9 +37,10 @@ public class CloudComputing {
     public Collection<SendFindRequestResultVO>returnByDate(@RequestBody FindRequestVO findRequestVO) throws ParseException, IOException {
         return dbMgr.getByDate(findRequestVO);
     }
-    @GetMapping("/findAll")
-    public Collection<SendFindRequestResultVO> returnAll(@RequestBody FindRequestVO findRequestVO) throws ParseException, IOException {
-        return dbMgr.returnAll(findRequestVO);
+    @RequestMapping(value ="/findAll",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Collection<SendFindRequestResultVO> returnAll(@RequestParam Map<String,String> params) throws ParseException, IOException {
+
+        return dbMgr.returnAll(new FindRequestVO(params.get("account"),null));
     }
     @RequestMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> FileUpload(@RequestParam("file") MultipartFile file, @RequestParam("id") String wristbandName ) throws IOException, InterruptedException, FirebaseMessagingException, ExecutionException, ParseException {

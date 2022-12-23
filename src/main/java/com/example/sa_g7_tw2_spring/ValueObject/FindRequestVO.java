@@ -9,6 +9,6 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 public class FindRequestVO extends ValueObject{
-    private final String account;
-    private final String message;
+    private String account;
+    private String message;
 }

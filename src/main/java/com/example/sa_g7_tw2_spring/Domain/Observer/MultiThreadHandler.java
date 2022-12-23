@@ -17,6 +17,8 @@ public class MultiThreadHandler implements Observer {
     private final AnalyzeThread inUsed[] = new AnalyzeThread[8];
     private final Queue<AnalyzeThread> queue = new LinkedList<>();
 
+    private SendNotifycationToFirebase sendNotifycationToFirebase=new SendNotifycationToFirebase();
+
     public void executeAnalyze(AnalyzedVO vo) throws IOException {
         AnalyzeThread thread = new AnalyzeThread(dataBaseManager,vo);
         queue(thread);
@@ -41,6 +43,7 @@ public class MultiThreadHandler implements Observer {
                     }
                     AnalyzeThread thread = queue.poll();
                     thread.attach(this);
+                    thread.attach(sendNotifycationToFirebase);
                     inUsed[j] = thread;
                     thread.start();
                 }

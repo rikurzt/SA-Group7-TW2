@@ -1,8 +1,8 @@
 package com.example.sa_g7_tw2_spring.Domain;
 
-import com.example.sa_g7_tw2_spring.data.MDVP;
-import com.example.sa_g7_tw2_spring.data.NullMDVP;
-import com.example.sa_g7_tw2_spring.data.RealMDVP;
+import com.example.sa_g7_tw2_spring.data.NullObject.MDVP;
+import com.example.sa_g7_tw2_spring.data.NullObject.NullMDVP;
+import com.example.sa_g7_tw2_spring.data.NullObject.RealMDVP;
 import com.example.sa_g7_tw2_spring.utils.ScriptRunner;
 
 import java.io.*;
