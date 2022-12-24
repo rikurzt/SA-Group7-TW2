@@ -1,14 +1,7 @@
-package com.example.sa_g7_tw2_spring.Domain.Observer;
-
-import com.example.sa_g7_tw2_spring.DataAccessObject.UserDAO;
-import com.example.sa_g7_tw2_spring.Domain.Observer.AnalyzeThread;
-import com.example.sa_g7_tw2_spring.Domain.Observer.ObservableSubject;
-import com.example.sa_g7_tw2_spring.ValueObject.ResultVO;
+package com.example.sa_g7_tw2_spring.Domain.Observer_and_ThreadPool;
 
 import com.google.firebase.messaging.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;

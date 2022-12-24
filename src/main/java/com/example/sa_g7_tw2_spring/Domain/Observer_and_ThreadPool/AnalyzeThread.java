@@ -1,4 +1,4 @@
-package com.example.sa_g7_tw2_spring.Domain.Observer;
+package com.example.sa_g7_tw2_spring.Domain.Observer_and_ThreadPool;
 
 import com.example.sa_g7_tw2_spring.Domain.*;
 import com.example.sa_g7_tw2_spring.Domain.Command_and_Facade.DataBaseManager;

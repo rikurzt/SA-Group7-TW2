@@ -2,7 +2,7 @@ package com.example.sa_g7_tw2_spring.Event;
 
 import com.example.sa_g7_tw2_spring.DataAccessObject.ResultProcessDAO;
 import com.example.sa_g7_tw2_spring.DataAccessObject.UserDAO;
-import com.example.sa_g7_tw2_spring.Domain.Observer.MultiThreadHandler;
+import com.example.sa_g7_tw2_spring.Domain.Observer_and_ThreadPool.MultiThreadHandler;
 import com.example.sa_g7_tw2_spring.Domain.Prototype.ValueObjectCache;
 import com.example.sa_g7_tw2_spring.ValueObject.AnalyzedVO;
 import com.example.sa_g7_tw2_spring.ValueObject.UploadVO;

@@ -1,7 +1,8 @@
 package com.example.sa_g7_tw2_spring.Controller;
 
 import com.example.sa_g7_tw2_spring.Domain.Command_and_Facade.DataBaseManager;
-import com.example.sa_g7_tw2_spring.Domain.Observer.MultiThreadHandler;
+import com.example.sa_g7_tw2_spring.Domain.Observer_and_ThreadPool.MultiThreadHandler;
+import com.example.sa_g7_tw2_spring.Domain.Prototype.ValueObjectCache;
 import com.example.sa_g7_tw2_spring.ValueObject.*;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,11 @@ public class CloudComputing {
     public ResponseEntity<?> FileUpload(@RequestParam("file") MultipartFile file, @RequestParam("id") String wristbandName ) throws IOException, InterruptedException, FirebaseMessagingException, ExecutionException, ParseException {
         return dbMgr.upload(file, wristbandName , mth);
     }
-    @GetMapping("/login")
-    public ResponseEntity<?> UserLogin(@RequestBody LoginDataVO loginData) throws ParseException, IOException {
+    @RequestMapping(value ="/login",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<?> UserLogin(@RequestParam("account") String account,@RequestParam("password") String password) throws ParseException, IOException {
+        LoginDataVO loginData = (LoginDataVO) ValueObjectCache.getValueObject("loginDataVO");
+        loginData.setAccount(account);
+        loginData.setPassword(password);
         return dbMgr.login(loginData);
     }
     @GetMapping("/newuser")
