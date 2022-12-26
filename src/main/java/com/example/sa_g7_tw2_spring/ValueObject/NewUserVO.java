@@ -6,17 +6,17 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class NewUserVO extends ValueObject{
-    private final String account;
-    private final String userName;
-    private final String password;
-    private final String gender;
-    private final int age;
-    private final String phone;
-    private final String address;
-    private final String familyID;
-    private final String familyName;
-    private final String familyPhone;
-    private final String token;
-    private final String wristbandName;
+    private String account;
+    private String userName;
+    private String password;
+    private String gender;
+    private int age;
+    private String phone;
+    private String address;
+    private String familyID;
+    private String familyName;
+    private String familyPhone;
+    private String token;
+    private String wristbandName;
 
 }

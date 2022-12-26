@@ -45,9 +45,9 @@ public class SqlFlyWeightFactory {
             case "newUserSQL1":
                 return new SqlFlyWeight("INSERT INTO analysisresult.account(Email_Account, Password,Token )"+"VALUES(?,?,?)");
             case "newUserSQL2":
-                return new SqlFlyWeight("INSERT INTO analysisresult.emergency_contact(Emergency_Contact_Phone,Emergency_Contact_Name,EC_ID )"+"VALUES(?,?,?)");
+                return new SqlFlyWeight("INSERT INTO analysisresult.emergency_contact(Emergency_Contact_Phone,Emergency_Contact_Name,EC_ID,User_ID )"+"VALUES(?,?,?,?)");
             case "newUserSQL3":
-                return  new SqlFlyWeight("INSERT INTO analysisresult.wristband(Name)"+"VALUES(?)");
+                return  new SqlFlyWeight("INSERT INTO analysisresult.wristband(W_Name,User_ID)"+"VALUES(?,?)");
             case "returnresult":
                 return new SqlFlyWeight("SELECT analysisresult.analysis.up_date,analysisresult.analysis.result,analysisresult.analysis.record_len " +
                         "FROM analysisresult.analysis LEFT JOIN analysisresult.user " +
@@ -64,6 +64,8 @@ public class SqlFlyWeightFactory {
             case "soundFileToDB":
                 return new SqlFlyWeight("INSERT INTO analysisresult.voicefile(vofile,W_Name,An_ID) " +
                         "VALUES (?,?,?)");
+            case "getIDByaccount":
+                return  new SqlFlyWeight("SELECT analysisresult.user.User_ID FROM analysisresult.user WHERE analysisresult.user.Email_Account = ");
             default : //可选
                 return null;
         }

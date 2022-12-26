@@ -42,9 +42,17 @@ public class UserDAO extends DataAccessObject {
         //先從wristband名字中抓使用者資料庫ID，再用ID找到email，用email關連到token
         SqlFlyWeight sqlFlyWeight = sqlFlyWeightFactory.getSqlFlyWeight("getIDByWristbandName");
         String sql=sqlFlyWeight.sql+"\""+name+"\"";
-        int userID=jdbcTemplate.queryForList(sql).stream().map(map->{
-            return new Integer(map.get("User_ID").toString());
-        }).collect(Collectors.toList()).get(0);
+        int userID= Integer.parseInt(jdbcTemplate.queryForList(sql).stream().map(map->{
+            return (map.get("User_ID").toString());
+        }).collect(Collectors.toList()).get(0));
+        return userID;
+    }
+    public int returnIDByaccount(String account){
+        SqlFlyWeight sqlFlyWeight = sqlFlyWeightFactory.getSqlFlyWeight("getIDByaccount");
+        String sql=sqlFlyWeight.sql+"\""+account+"\"";
+        int userID= Integer.parseInt(jdbcTemplate.queryForList(sql).stream().map(map->{
+            return (map.get("User_ID").toString());
+        }).collect(Collectors.toList()).get(0));
         return userID;
     }
 
@@ -80,17 +88,20 @@ public class UserDAO extends DataAccessObject {
         String sql3=sqlFlyWeightFactory.getSqlFlyWeight("newUserSQL3").sql;
         String sql4=sqlFlyWeightFactory.getSqlFlyWeight("newUserSQL4").sql;
         try {
-            jdbcTemplate.update(sql1
-                    ,user.getAccount(),MD5.encoding(user.getPassword()),user.getToken());
-            jdbcTemplate.update(sql2,user.getFamilyPhone(),user.getUserName(),user.getFamilyID());
-            jdbcTemplate.update(sql3,user.getWristbandName());
+            
             jdbcTemplate.update(sql4
                     ,user.getAccount(),user.getUserName()
                     ,user.getGender(),user.getAge(),user.getPhone(),user.getAddress());
+            int id = returnIDByaccount(user.getAccount());
+            jdbcTemplate.update(sql1
+                    ,user.getAccount(),MD5.encoding(user.getPassword()),user.getToken());
+            jdbcTemplate.update(sql2,user.getFamilyPhone(),user.getFamilyName(),user.getFamilyID(),id);
+            jdbcTemplate.update(sql3,user.getWristbandName(),id);
+
 
         }catch (Exception e){
             System.out.println(e);
-            return new ResponseEntity("create error"+e, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("create error", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity("create Success", HttpStatus.OK);
     }

@@ -28,11 +28,14 @@ public class ValueObjectCache {
         AccountVO accountVO = new AccountVO(null,null,null);
         voMap.put("AccountVO",accountVO);
         EmergencyContectVO emergencyContectVO = new EmergencyContectVO(null,null,null);
+        voMap.put("EmergencyContectVO",emergencyContectVO);
         WristbandVO wristbandVO = new WristbandVO(null);
         voMap.put("wristbandVO",wristbandVO);
         AnalyzedVO analyzedVO = new AnalyzedVO(null,null,null,0,null);
         voMap.put("AnalyzedVO",analyzedVO);
         SendFindRequestResultVO sendFindRequestResultVO = new SendFindRequestResultVO(null,false);
         voMap.put("SendFindRequestResultVO",sendFindRequestResultVO);
+        NewUserVO newUserVO = new NewUserVO(null,null,null,null,0,null,null,null,null,null,null,null);
+        voMap.put("newUserVO",newUserVO);
     }
 }

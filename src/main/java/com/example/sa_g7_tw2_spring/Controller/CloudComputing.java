@@ -54,8 +54,21 @@ public class CloudComputing {
         loginData.setPassword(password);
         return dbMgr.login(loginData);
     }
-    @GetMapping("/newuser")
-    public ResponseEntity<?> NewUser(@RequestBody NewUserVO newUserVO) throws ParseException, IOException {
+    @RequestMapping(value ="/newuser",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<?> NewUser(@RequestParam("account")String account,@RequestParam("userName")String userName,@RequestParam("password")String password,@RequestParam("gender")String gender,@RequestParam("age")String age,@RequestParam("phone")String phone,@RequestParam("address")String address,@RequestParam("familyID")String familyID,@RequestParam("familyName")String familyName,@RequestParam("familyPhone")String familyPhone,@RequestParam("token")String token,@RequestParam("wristbandName")String wristbandName  ) throws ParseException, IOException {
+        NewUserVO newUserVO = (NewUserVO) ValueObjectCache.getValueObject("newUserVO");
+        newUserVO.setAccount(account);
+        newUserVO.setUserName(userName);
+        newUserVO.setPassword(password);
+        newUserVO.setGender(gender);
+        newUserVO.setAge(Integer.parseInt(age));
+        newUserVO.setAddress(address);
+        newUserVO.setPhone(phone);
+        newUserVO.setFamilyID(familyID);
+        newUserVO.setFamilyName(familyName);
+        newUserVO.setFamilyPhone(familyPhone);
+        newUserVO.setToken(token);
+        newUserVO.setWristbandName(wristbandName);
         return dbMgr.newUser(newUserVO);
     }
 
