@@ -8,4 +8,5 @@ import lombok.Data;
 public class SendFindRequestResultVO extends ValueObject{
     private String date;
     private boolean result;
+    private float percentage;
 }

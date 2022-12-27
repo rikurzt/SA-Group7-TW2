@@ -71,6 +71,7 @@ public class AnalyzeThread extends Thread implements ObservableSubject {
             resultVO.setTime(fileTime);
             resultVO.setUser_ID(userID);
             resultVO.setAn_ID(vo.getAn_ID());
+            resultVO.setPercentage(0.5f);
             dbmgr.save(resultVO);
         } catch (Exception e) {
             throw new RuntimeException(e);

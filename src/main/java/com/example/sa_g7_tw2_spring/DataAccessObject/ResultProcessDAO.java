@@ -21,7 +21,7 @@ public class ResultProcessDAO extends DataAccessObject{
 
     public void saveResult(ResultVO result) {
         String sql = sqlFlyWeightFactory.getSqlFlyWeight("saveResult").sql;
-        jdbcTemplate.update(sql,result.getTime(),result.getResult(),result.getLength(),result.getUser_ID(),result.getAn_ID());
+        jdbcTemplate.update(sql,result.getTime(),result.getResult(),result.getLength(),result.getUser_ID(),result.getAn_ID(),result.getPercentage());
     }
 
 

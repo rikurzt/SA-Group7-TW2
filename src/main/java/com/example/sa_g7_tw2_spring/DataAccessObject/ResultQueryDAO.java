@@ -27,6 +27,9 @@ public class ResultQueryDAO extends DataAccessObject{
             SendFindRequestResultVO vo =(SendFindRequestResultVO)ValueObjectCache.getValueObject("SendFindRequestResultVO");
             vo.setDate(((LocalDateTime) map.get("up_date")).toString());
             vo.setResult((Boolean)map.get("result"));
+            if(map.get("percentage")!= null){
+                vo.setPercentage((Float)map.get("percentage"));
+            }
            return vo;
             //return new SendFindRequestResultVO(((LocalDateTime) map.get("up_date")).toString(),(Boolean)map.get("result"));
         }).collect(Collectors.toList());

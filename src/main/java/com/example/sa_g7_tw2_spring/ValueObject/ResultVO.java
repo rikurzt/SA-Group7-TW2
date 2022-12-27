@@ -14,6 +14,7 @@ public class ResultVO extends ValueObject{
     private String wristbandName;
     private int User_ID;
     private String An_ID;
+    private float percentage;
 
     public boolean getResult() {
         return result;

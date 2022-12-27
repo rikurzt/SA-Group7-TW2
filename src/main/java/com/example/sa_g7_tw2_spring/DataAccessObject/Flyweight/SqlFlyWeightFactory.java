@@ -59,8 +59,8 @@ public class SqlFlyWeightFactory {
             case "appendDate":
                 return new SqlFlyWeight(" AND up_date = ");
             case "saveResult":
-                return new SqlFlyWeight("INSERT INTO analysisresult.analysis(up_date, result, record_len,user_ID,An_ID) " +
-                        "VALUES (?,?,?,?,?)");
+                return new SqlFlyWeight("INSERT INTO analysisresult.analysis(up_date, result, record_len,user_ID,An_ID,percentage) " +
+                        "VALUES (?,?,?,?,?,?)");
             case "soundFileToDB":
                 return new SqlFlyWeight("INSERT INTO analysisresult.voicefile(vofile,W_Name,An_ID) " +
                         "VALUES (?,?,?)");

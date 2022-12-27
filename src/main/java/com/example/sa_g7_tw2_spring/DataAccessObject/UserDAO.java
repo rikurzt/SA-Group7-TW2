@@ -88,7 +88,7 @@ public class UserDAO extends DataAccessObject {
         String sql3=sqlFlyWeightFactory.getSqlFlyWeight("newUserSQL3").sql;
         String sql4=sqlFlyWeightFactory.getSqlFlyWeight("newUserSQL4").sql;
         try {
-            
+
             jdbcTemplate.update(sql4
                     ,user.getAccount(),user.getUserName()
                     ,user.getGender(),user.getAge(),user.getPhone(),user.getAddress());
